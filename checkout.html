@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .checkout-section {
+            padding: 0 0 80px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        #map {
+            height: 280px;
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .location-banner {
+            background: rgba(138, 43, 226, 0.08);
+            border: 1px solid rgba(138, 43, 226, 0.25);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+        }
+
+        .location-banner button {
+            flex-shrink: 0;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+
+        .payment-option:hover {
+            border-color: rgba(138, 43, 226, 0.4);
+        }
+
+        .payment-option.selected {
+            border-color: var(--purple);
+            background: rgba(138, 43, 226, 0.07);
+        }
+
+        .payment-option input[type=radio] {
+            accent-color: var(--purple);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .payment-icon {
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .payment-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .payment-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .sub-input {
+            margin-top: 12px;
+        }
+
+        .delivery-ok {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            color: #22c55e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .checkout-order-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .checkout-order-item img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        select.form-input option {
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right"><a href="cart.html" class="cart-btn">🛒 Cart<span class="cart-badge"
+                        style="display:none">0</span></a></div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb"><a href="products.html">Shop</a><span>›</span><a
+                    href="cart.html">Cart</a><span>›</span><span>Checkout</span></div>
+            <h1 class="heading-lg">Checkout</h1>
+        </div>
+    </section>
+
+    <!-- Steps Bar -->
+    <div class="container" style="margin-bottom:28px;">
+        <div class="steps-bar">
+            <div class="step-item">
+                <div class="step-num active" id="sn1">1</div>
+                <div class="step-label active" id="sl1">Delivery</div>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step-item">
+                <div class="step-num" id="sn2">2</div>
+                <div class="step-label" id="sl2">Payment</div>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step-item">
+                <div class="step-num" id="sn3">3</div>
+                <div class="step-label" id="sl3">Confirm</div>
+            </div>
+        </div>
+    </div>
+
+    <section class="checkout-section">
+        <div class="container">
+            <div class="checkout-layout">
+
+                <!-- LEFT -->
+                <div>
+
+                    <!-- STEP 1: Address + Map -->
+                    <div id="step1" class="checkout-card">
+                        <div class="section-title">📦 Delivery Address</div>
+
+                        <!-- Location permission banner -->
+                        <div class="location-banner" id="loc-banner" style="flex-wrap: wrap; gap: 10px;">
+                            <span>📍</span>
+                            <div style="flex:1; display:flex; gap:8px; align-items:center;">
+                                <input type="text" id="manual-loc" class="form-input" placeholder="Map Search (Optional) Pincode/Location" style="margin:0; padding:8px 12px; font-size:0.85rem;" onkeypress="if(event.key==='Enter'){event.preventDefault();searchLocation();}">
+                                <button type="button" class="btn btn-outline btn-sm" style="border-color:rgba(138,43,226,0.6); color:#fff;" onclick="searchLocation()">Search</button>
+                            </div>
+                            <div style="font-size:0.85rem; padding:0 8px; font-weight:700; color:var(--text-muted);">OR</div>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="requestLocation()">⚙ Auto Detect</button>
+                        </div>
+
+                        <!-- Map -->
+                        <div id="map"></div>
+
+                        <!-- Detected address -->
+                        <div class="delivery-ok" id="delivery-ok" style="display:none;">
+                            ✅ <span id="delivery-msg">Delivery available to your location!</span>
+                        </div>
+
+                        <form onsubmit="goStep2(event)">
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">First Name *</label><input
+                                        class="form-input" id="a-fn" placeholder="Arjun" required /></div>
+                                <div class="form-group"><label class="form-label">Last Name *</label><input
+                                        class="form-input" id="a-ln" placeholder="Sharma" required /></div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">Phone *</label><input
+                                        class="form-input" id="a-ph" type="tel" placeholder="+91 99999 99999"
+                                        required /></div>
+                                <div class="form-group"><label class="form-label">Email *</label><input
+                                        class="form-input" id="a-em" type="email" placeholder="you@email.com"
+                                        required /></div>
+                            </div>
+                            <div class="form-group"><label class="form-label">Street Address *</label><input
+                                    class="form-input" id="a-st" placeholder="H.No 5, MG Road" required /></div>
+                            <div class="form-row">
+                                <div class="form-group"><label class="form-label">City *</label><input
+                                        class="form-input" id="a-ci" placeholder="Hyderabad" required /></div>
+                                <div class="form-group"><label class="form-label">State *</label>
+                                    <select class="form-input" id="a-state" required>
+                                        <option value="">Select State</option>
+                                        <option>Andhra Pradesh</option>
+                                        <option>Telangana</option>
+                                        <option>Karnataka</option>
+                                        <option>Tamil Nadu</option>
+                                        <option>Kerala</option>
+                                        <option>Maharashtra</option>
+                                        <option>Delhi</option>
+                                        <option>Uttar Pradesh</option>
+                                        <option>Rajasthan</option>
+                                        <option>Gujarat</option>
+                                        <option>West Bengal</option>
+                                        <option>Punjab</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group"><label class="form-label">Pincode *</label><input class="form-input"
+                                    id="a-pin" placeholder="500001" required pattern="[0-9]{6}" maxlength="6" /></div>
+                            <div class="delivery-ok" style="margin-bottom:12px;">✅ We deliver to all pincodes across
+                                India!</div>
+                            <button type="submit" class="btn btn-primary btn-lg" style="margin-top:4px;">Continue to
+                                Payment →</button>
+                        </form>
+                    </div>
+
+                    <!-- STEP 2: Payment -->
+                    <div id="step2" class="checkout-card" style="display:none;">
+                        <div class="section-title">💳 Payment Method</div>
+
+                        <div onclick="selectPay('upi')" class="payment-option selected" id="pay-upi">
+                            <input type="radio" name="pay" value="upi" checked /><span class="payment-icon">📱</span>
+                            <div>
+                                <div class="payment-name">UPI</div>
+                                <div class="payment-desc">Google Pay, PhonePe, Paytm, BHIM</div>
+                            </div>
+                        </div>
+                        <div id="upi-extra" class="sub-input"><input class="form-input" id="pay-upi-id"
+                                placeholder="your-upi-id@paytm" /></div>
+
+                        <div onclick="selectPay('card')" class="payment-option" id="pay-card">
+                            <input type="radio" name="pay" value="card" /><span class="payment-icon">💳</span>
+                            <div>
+                                <div class="payment-name">Credit / Debit Card</div>
+                                <div class="payment-desc">Visa, Mastercard, RuPay, Amex</div>
+                            </div>
+                        </div>
+                        <div id="card-extra" class="sub-input" style="display:none;">
+                            <input class="form-input" id="pay-card-num" placeholder="Card number" maxlength="19"
+                                style="margin-bottom:8px;" />
+                            <div class="form-row"><input class="form-input" id="pay-card-exp" placeholder="MM/YY"
+                                    maxlength="5" /><input class="form-input" id="pay-card-cvv" placeholder="CVV"
+                                    maxlength="3" /></div>
+                        </div>
+
+                        <div onclick="selectPay('netbank')" class="payment-option" id="pay-netbank">
+                            <input type="radio" name="pay" value="netbank" /><span class="payment-icon">🏦</span>
+                            <div>
+                                <div class="payment-name">Net Banking</div>
+                                <div class="payment-desc">All major Indian banks supported</div>
+                            </div>
+                        </div>
+                        <div id="netbank-extra" class="sub-input" style="display:none;">
+                            <select class="form-input" id="pay-bank-select">
+                                <option value="">Select Your Bank</option>
+                                <optgroup label="Popular Banks">
+                                    <option>SBI (State Bank of India)</option>
+                                    <option>HDFC Bank</option>
+                                    <option>ICICI Bank</option>
+                                    <option>Axis Bank</option>
+                                    <option>Kotak Mahindra Bank</option>
+                                </optgroup>
+                                <optgroup label="Other Banks">
+                                    <option>Allahabad Bank</option>
+                                    <option>Andhra Bank</option>
+                                    <option>Bandhan Bank</option>
+                                    <option>Bank of Baroda</option>
+                                    <option>Bank of India</option>
+                                    <option>Bank of Maharashtra</option>
+                                    <option>Canara Bank</option>
+                                    <option>Central Bank of India</option>
+                                    <option>City Union Bank</option>
+                                    <option>Corporation Bank</option>
+                                    <option>DBS Bank</option>
+                                    <option>Equitas Small Finance Bank</option>
+                                    <option>Federal Bank</option>
+                                    <option>IDBI Bank</option>
+                                    <option>IDFC FIRST Bank</option>
+                                    <option>Indian Bank</option>
+                                    <option>Indian Overseas Bank</option>
+                                    <option>IndusInd Bank</option>
+                                    <option>Jammu & Kashmir Bank</option>
+                                    <option>Karnataka Bank</option>
+                                    <option>Karur Vysya Bank</option>
+                                    <option>Oriental Bank of Commerce</option>
+                                    <option>Punjab & Sind Bank</option>
+                                    <option>Punjab National Bank</option>
+                                    <option>Saraswat Bank</option>
+                                    <option>South Indian Bank</option>
+                                    <option>Standard Chartered Bank</option>
+                                    <option>Syndicate Bank</option>
+                                    <option>UCO Bank</option>
+                                    <option>Union Bank of India</option>
+                                    <option>Yes Bank</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div onclick="selectPay('cod')" class="payment-option" id="pay-cod">
+                            <input type="radio" name="pay" value="cod" /><span class="payment-icon">💰</span>
+                            <div>
+                                <div class="payment-name">Cash on Delivery</div>
+                                <div class="payment-desc">Pay when your order arrives at your door</div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex;gap:12px;margin-top:20px;">
+                            <button class="btn btn-ghost" onclick="goBack1()">← Back</button>
+                            <button class="btn btn-primary btn-lg" onclick="placeOrder()">🎉 Place Order</button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: Success -->
+                    <div id="step3" class="checkout-card" style="display:none;">
+                        <div class="success-screen">
+                            <div class="success-icon">🎉</div>
+                            <h2>Order Placed Successfully!</h2>
+                            <p>Your custom fan merch is being prepared with love! You'll get a confirmation at your
+                                email.</p>
+                            <div class="order-id" id="order-id-display">Order #FV-000000</div>
+
+                            <div style="margin-top: 15px; margin-bottom: 25px;">
+                                <a href="order-status.html" id="track-order-btn" class="btn btn-outline"
+                                    style="border-color:var(--purple); color:var(--purple-light);">🚚 Track Order
+                                    Status</a>
+                            </div>
+
+                            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                                <a href="products.html" class="btn btn-primary btn-lg">🏠 Continue Shopping</a>
+                                <a href="customize.html" class="btn btn-outline">🎨 Design More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT: Order Summary -->
+                <div class="order-summary-card" style="height:fit-content;">
+                    <h2
+                        style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+                        Your Order</h2>
+                    <div id="co-items"></div>
+                    <div style="padding-top:14px;margin-top:8px;border-top:1px solid var(--border);">
+                        <div class="order-row"><span>Subtotal</span><span id="co-sub">—</span></div>
+                        <div class="order-row"><span>GST (0%)</span><span id="co-gst">—</span></div>
+                        <div class="order-row"><span>Shipping</span><span id="co-ship">—</span></div>
+                        <div class="order-total"><span>Total</span><span id="co-total">—</span></div>
+                    </div>
+                    <div style="text-align:center;margin-top:14px;font-size:0.76rem;color:var(--text-muted);">
+                        🔒 Encrypted &amp; secure checkout<br />
+                        🚚 Delivery within 3–5 business days
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>© 2026 FanVerse. Student project for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+    <div class="toast-container"></div>
+
+    <!-- Net Banking Sandbox Modal -->
+    <div id="nb-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center;">
+        <div style="background:#fff; width:400px; max-width:90%; border-radius:12px; overflow:hidden; font-family:sans-serif; box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <!-- Header -->
+            <div style="background:#1d4ed8; padding:20px; color:#fff; text-align:center;">
+                <h3 id="nb-bank-name" style="margin:0; font-size:1.3rem; font-weight:700;">Secure Net Banking</h3>
+                <div style="font-size:0.8rem; opacity:0.8; margin-top:4px;">Educational Sandbox Mode</div>
+            </div>
+            <!-- Body: Login -->
+            <div id="nb-step-login" style="padding:30px;">
+                <p style="color:#475569; font-size:0.9rem; margin-bottom:20px; text-align:center;">Please enter your credentials to authorise this payment. (Any credentials will work)</p>
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; margin-bottom:6px; color:#334155; font-weight:600; font-size:0.85rem;">Customer ID</label>
+                    <input type="text" id="nb-user" value="testuser" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.95rem; color:#0f172a; box-sizing:border-box;">
+                </div>
+                <div style="margin-bottom:25px;">
+                    <label style="display:block; margin-bottom:6px; color:#334155; font-weight:600; font-size:0.85rem;">Password</label>
+                    <input type="password" id="nb-pass" value="123456" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.95rem; color:#0f172a; box-sizing:border-box;">
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <span style="font-size:0.9rem; font-weight:700; color:#1e293b;">Amount to Pay:</span>
+                    <span style="font-size:1.1rem; font-weight:800; color:#1d4ed8;" id="nb-amount">₹0</span>
+                </div>
+                <button onclick="nbLogin()" type="button" style="width:100%; background:#1d4ed8; color:#fff; border:none; padding:12px; border-radius:6px; font-weight:700; font-size:1rem; cursor:pointer;">Login Securely</button>
+                <button onclick="closeNbModal()" type="button" style="width:100%; background:transparent; color:#64748b; border:none; padding:12px; margin-top:10px; font-weight:600; cursor:pointer;">Cancel Payment</button>
+            </div>
+            <!-- Body: OTP -->
+            <div id="nb-step-otp" style="padding:30px; display:none;">
+                <div style="text-align:center; margin-bottom:20px;">
+                    <div style="background:#eff6ff; width:60px; height:60px; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0 auto 15px; color:#3b82f6; font-size:1.5rem;">📱</div>
+                    <div style="color:#0f172a; font-weight:700; font-size:1.1rem;">Verification Required</div>
+                    <p style="color:#64748b; font-size:0.85rem; margin-top:6px;">We've sent a 6-digit OTP to your registered mobile number ending in **89.</p>
+                </div>
+                <input type="text" id="nb-otp" placeholder="Enter 6-digit OTP" maxlength="6" style="width:100%; padding:12px; text-align:center; letter-spacing:8px; font-size:1.2rem; border:1px solid #cbd5e1; border-radius:6px; margin-bottom:20px; font-weight:700; box-sizing:border-box;">
+                <button onclick="nbVerifyOTP()" type="button" id="nb-verify-btn" style="width:100%; background:#10b981; color:#fff; border:none; padding:12px; border-radius:6px; font-weight:700; font-size:1rem; cursor:pointer;">Verify & Pay</button>
+                <button onclick="closeNbModal()" type="button" style="width:100%; background:transparent; color:#64748b; border:none; padding:12px; margin-top:5px; font-weight:600; cursor:pointer;">Cancel</button>
+            </div>
+            <!-- Body: Success -->
+            <div id="nb-step-success" style="padding:40px 30px; text-align:center; display:none;">
+                <div style="color:#10b981; font-size:4rem; margin-bottom:10px;">✅</div>
+                <h3 style="color:#0f172a; margin:0 0 10px; font-size:1.3rem;">Payment Successful!</h3>
+                <p style="color:#64748b; font-size:0.9rem; margin-bottom:20px;">Verified by Sandbox Gateway.<br>Redirecting back to FanVerse...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // ── Cart Data ──────────────────────────────────────────────
+        const cart = JSON.parse(localStorage.getItem('fanverse_cart') || '[]');
+        const pricing = JSON.parse(localStorage.getItem('fanverse_checkout') || '{}');
+
+        const itemsEl = document.getElementById('co-items');
+        if (!cart.length) {
+            itemsEl.innerHTML = '<p style="font-size:0.85rem;color:var(--text-muted);">Cart empty. <a href="products.html" style="color:var(--purple-light);">Shop now</a></p>';
+        } else {
+            itemsEl.innerHTML = cart.map(i => `
+    <div class="checkout-order-item">
+      <img src="${i.img || 'img/tshirt_black.png'}" alt="${i.name}" onerror="this.src='img/tshirt_black.png'" />
+      <div style="flex:1;font-size:0.84rem;"><div style="font-weight:600;">${i.name}</div><div style="color:var(--text-muted);font-size:0.75rem;">${i.meta || ''} × ${i.qty || 1}</div></div>
+      <div style="font-weight:700;font-size:0.88rem;">₹${((i.price || 0) * (i.qty || 1)).toLocaleString('en-IN')}</div>
+    </div>
+  `).join('');
+        }
+        if (pricing.subtotal !== undefined) {
+            document.getElementById('co-sub').textContent = `₹${pricing.subtotal.toLocaleString('en-IN')}`;
+            document.getElementById('co-gst').textContent = `₹${pricing.gst.toLocaleString('en-IN')}`;
+            document.getElementById('co-ship').textContent = pricing.shipping === 0 ? 'FREE' : `₹${pricing.shipping}`;
+            document.getElementById('co-total').textContent = `₹${pricing.total.toLocaleString('en-IN')}`;
+        }
+
+        // ── Map / Geolocation ──────────────────────────────────────
+        let map, marker;
+
+        function requestLocation() {
+            if (!navigator.geolocation) { if(window.showToast) showToast('Geolocation not supported', 'error'); return; }
+            if (window.showToast) showToast('Detecting location...', 'info');
+            navigator.geolocation.getCurrentPosition(
+                pos => initMap(pos.coords.latitude, pos.coords.longitude),
+                () => { if(window.showToast) showToast('Location access denied. Please enter address manually.', 'error'); }
+            );
+        }
+
+        function searchLocation() {
+            const input = document.getElementById('manual-loc');
+            let query = input.value.trim();
+            if (!query) {
+                if (window.showToast) showToast('Please enter a location or pincode', 'error');
+                return;
+            }
+            
+            if (window.showToast) showToast('Searching...', 'info');
+
+            // Append ", India" if not already there to help accuracy
+            let finalQuery = query;
+            if (!query.toLowerCase().includes('india')) finalQuery += ", India";
+
+            const liqKey = 'pk.a1831730d4938717f42c5362b18dd0f8';
+            const url = `https://us1.locationiq.com/v1/search.php?key=${liqKey}&q=${encodeURIComponent(finalQuery)}&format=json&countrycodes=in&limit=1`;
+
+            fetch(url)
+                .then(r => {
+                    if (!r.ok) throw new Error('Search API Error');
+                    return r.json();
+                })
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+                        
+                        // Force map display
+                        document.getElementById('map').style.display = 'block';
+                        
+                        initMap(lat, lon);
+                        reverseGeocode(lat, lon);
+                        if (window.showToast) showToast('📍 Location found!');
+                    } else {
+                        // Fallback: If map can't find it, paste it into manual street address box
+                        document.getElementById('a-st').value = query;
+                        if (window.showToast) showToast('Could not find on Map. Please fill manually.', 'warning');
+                    }
+                })
+                .catch(err => { 
+                    console.error('Search error:', err);
+                    // Minimal fallback
+                    document.getElementById('a-st').value = query;
+                    if (window.showToast) showToast('Search Error. Please type address manually.', 'error'); 
+                });
+        }
+
+        function initMap(lat, lng) {
+            const mapEl = document.getElementById('map');
+            mapEl.style.display = 'block';
+            // Keeping loc-banner visible so users can adjust/search again if needed!
+
+            if (!map) {
+                map = L.map('map').setView([lat, lng], 15);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+                    maxZoom: 19
+                }).addTo(map);
+            } else {
+                map.setView([lat, lng], 15);
+            }
+
+            if (marker) map.removeLayer(marker);
+            marker = L.marker([lat, lng], {
+                draggable: true,
+                title: 'Your delivery location'
+            }).addTo(map).bindPopup('📍 Delivery Location').openPopup();
+
+            marker.on('dragend', e => {
+                const { lat: la, lng: ln } = e.target.getLatLng();
+                reverseGeocode(la, ln);
+            });
+
+            reverseGeocode(lat, lng);
+            localStorage.setItem('fanverseLocation', JSON.stringify({ lat, lng }));
+        }
+
+        function reverseGeocode(lat, lng) {
+            const liqKey = 'pk.a1831730d4938717f42c5362b18dd0f8';
+            fetch(`https://us1.locationiq.com/v1/reverse.php?key=${liqKey}&lat=${lat}&lon=${lng}&format=json`)
+                .then(r => r.json())
+                .then(data => {
+                    const addr = data.address || {};
+                    // Detailed parsing for Indian addresses
+                    const street = addr.road || addr.pedestrian || addr.highway || addr.suburb || addr.neighbourhood || '';
+                    const city = addr.city || addr.town || addr.village || addr.city_district || '';
+                    const state = addr.state || '';
+                    const postcode = addr.postcode ? addr.postcode.replace(/\s/g, '').slice(0, 6) : '';
+
+                    // Auto-fill form
+                    if (street) document.getElementById('a-st').value = street;
+                    if (city) document.getElementById('a-ci').value = city;
+                    if (postcode) document.getElementById('a-pin').value = postcode;
+                    
+                    // Match State Dropdown
+                    if (state) {
+                        const stateSelect = document.getElementById('a-state');
+                        let found = false;
+                        for (let i = 0; i < stateSelect.options.length; i++) {
+                            if (stateSelect.options[i].text.toLowerCase() === state.toLowerCase()) {
+                                stateSelect.selectedIndex = i;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) stateSelect.value = "Other";
+                    }
+
+                    const displayAddr = [street, city, state, postcode].filter(Boolean).join(', ');
+                    const delivMsg = displayAddr ? `📍 ${displayAddr} — Delivery Available!` : `📍 Delivery Available to your area!`;
+                    document.getElementById('delivery-msg').textContent = delivMsg;
+                    document.getElementById('delivery-ok').style.display = 'flex';
+
+                    if (window.showToast) showToast('📍 Location detected and address auto-filled!');
+                })
+                .catch(() => { document.getElementById('delivery-ok').style.display = 'flex'; });
+        }
+
+        // ── Step logic ─────────────────────────────────────────────
+        function goStep2(e) {
+            e.preventDefault();
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+            setStep(2);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function goBack1() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+            setStep(1);
+        }
+        function setStep(n) {
+            [1, 2, 3].forEach(i => {
+                const num = document.getElementById(`sn${i}`), lbl = document.getElementById(`sl${i}`);
+                if (i < n) { num.classList.add('done'); num.classList.remove('active'); lbl.classList.remove('active'); num.textContent = '✓'; }
+                if (i === n) { num.classList.add('active'); num.classList.remove('done'); lbl.classList.add('active'); num.textContent = i; }
+                if (i > n) { num.classList.remove('active', 'done'); lbl.classList.remove('active'); num.textContent = i; }
+            });
+        }
+
+        // ── Payment ────────────────────────────────────────────────
+        function selectPay(method) {
+            ['upi', 'card', 'netbank', 'cod'].forEach(m => {
+                const opt = document.getElementById(`pay-${m}`);
+                if (!opt) return;
+                opt.classList.toggle('selected', m === method);
+
+                // This fixes the issue: clicking the div now also checks the radio button!
+                const radio = opt.querySelector('input[type="radio"]');
+                if (radio && m === method) radio.checked = true;
+
+                const extra = document.getElementById(`${m}-extra`);
+                if (extra) extra.style.display = (m === method && method !== 'cod') ? 'block' : 'none';
+            });
+        }
+
+        // ── Place Order ────────────────────────────────────────────
+        function placeOrder() {
+            if (cart.length === 0) return alert('Cart is empty!');
+
+            // Payment Validation
+            const selectedPayRadio = document.querySelector('input[name="pay"]:checked');
+            const method = selectedPayRadio ? selectedPayRadio.value : 'cod';
+
+            if (method === 'upi') {
+                const upiId = document.getElementById('pay-upi-id').value.trim();
+                if (!upiId) {
+                    if (window.showToast) showToast('Please enter your UPI ID', 'error');
+                    else alert('Please enter your UPI ID');
+                    return;
+                }
+            } else if (method === 'card') {
+                const cnum = document.getElementById('pay-card-num').value.trim();
+                const cexp = document.getElementById('pay-card-exp').value.trim();
+                const ccvv = document.getElementById('pay-card-cvv').value.trim();
+                if (!cnum || !cexp || !ccvv) {
+                    if (window.showToast) showToast('Please complete all card details', 'error');
+                    else alert('Please complete all card details');
+                    return;
+                }
+            } else if (method === 'netbank') {
+                const bank = document.getElementById('pay-bank-select').value;
+                if (!bank) {
+                    if (window.showToast) showToast('Please select your bank', 'error');
+                    else alert('Please select your bank');
+                    return;
+                }
+                openNbModal(bank);
+                return;
+            }
+
+            finishOrderPlace(method);
+        }
+
+        function openNbModal(bank) {
+            document.getElementById('nb-bank-name').textContent = bank + ' Secure Checkout';
+            document.getElementById('nb-amount').textContent = '₹' + (pricing.total || 0).toLocaleString('en-IN');
+            
+            document.getElementById('nb-step-login').style.display = 'block';
+            document.getElementById('nb-step-otp').style.display = 'none';
+            document.getElementById('nb-step-success').style.display = 'none';
+            document.getElementById('nb-modal').style.display = 'flex';
+        }
+
+        function closeNbModal() {
+            document.getElementById('nb-modal').style.display = 'none';
+            if (window.showToast) showToast('Payment Cancelled', 'warning');
+        }
+
+        function nbLogin() {
+            if (!document.getElementById('nb-user').value || !document.getElementById('nb-pass').value) {
+                alert('Please enter credentials');
+                return;
+            }
+            if (window.showToast) showToast('Authenticating...', 'info');
+            
+            setTimeout(() => {
+                document.getElementById('nb-step-login').style.display = 'none';
+                document.getElementById('nb-step-otp').style.display = 'block';
+                document.getElementById('nb-otp').value = '';
+            }, 800);
+        }
+
+        function nbVerifyOTP() {
+            const otp = document.getElementById('nb-otp').value;
+            if (otp.length < 4) {
+                alert('Please enter a valid OTP to simulate payment.');
+                return;
+            }
+            const btn = document.getElementById('nb-verify-btn');
+            btn.textContent = 'Verifying...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('nb-step-otp').style.display = 'none';
+                document.getElementById('nb-step-success').style.display = 'block';
+                
+                setTimeout(() => {
+                    document.getElementById('nb-modal').style.display = 'none';
+                    btn.textContent = 'Verify & Pay';
+                    btn.disabled = false;
+                    finishOrderPlace('netbank'); // Trigger real order flow
+                }, 1500);
+            }, 1000);
+        }
+
+        function finishOrderPlace(method) {
+            const oid = 'FV-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            document.getElementById('order-id-display').textContent = `Order #${oid}`;
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+            setStep(3);
+
+            const paymentMap = {
+                'upi': 'UPI',
+                'card': 'Credit / Debit Card',
+                'netbank': 'Net Banking',
+                'cod': 'Cash on Delivery'
+            };
+            const mappedPaymentMethod = paymentMap[method] || method.toUpperCase();
+
+            const state = document.getElementById('a-state').value;
+
+            const newOrder = {
+                id: oid,
+                date: new Date().toISOString(),
+                items: cart,
+                total: pricing.total || 0,
+                status: 'Order Confirmed',
+                paymentMethod: mappedPaymentMethod,
+                state: state,
+                icon: '📦'
+            };
+
+            let orders = JSON.parse(localStorage.getItem('fanverse_orders') || '[]');
+            orders.unshift(newOrder);
+            localStorage.setItem('fanverse_orders', JSON.stringify(orders));
+
+            // ── Save to Firebase Firestore ──
+            if (window.saveOrderToFirebase) {
+                const fullOrderData = {
+                    ...newOrder,
+                    customerEmail: document.getElementById('a-em').value,
+                    customerName: document.getElementById('a-fn').value + ' ' + document.getElementById('a-ln').value,
+                    customerPhone: document.getElementById('a-ph').value,
+                    customerAddress: document.getElementById('a-st').value,
+                    customerCity: document.getElementById('a-ci').value,
+                    customerPincode: document.getElementById('a-pin').value
+                };
+                window.saveOrderToFirebase(fullOrderData);
+            }
+
+            // ── Send Auto Email using EmailJS ──
+            const formEmail = document.getElementById('a-em').value;
+            const formName = document.getElementById('a-fn').value;
+            const savedUser = JSON.parse(localStorage.getItem('fanverseUser') || '{}');
+            const targetEmail = formEmail || savedUser.email;
+            const targetName = formName || savedUser.fname || 'Fan';
+
+            if (targetEmail && window.emailjs) {
+                // To make this work, you need to create a free account at https://www.emailjs.com/
+                // Then replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' below.
+                const templateParams = {
+                    to_name: targetName,
+                    email: targetEmail,
+                    order_id: oid,
+                    order_date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                    payment_method: mappedPaymentMethod,
+                    order_total: (pricing.total || 0).toLocaleString('en-IN'),
+                    message: 'Thank you for shopping at FanVerse! Your order has been successfully placed and is being processed.'
+                };
+
+                emailjs.send("service_7wuejcl", "template_5dw0jgq", templateParams)
+                    .then(function (response) {
+                        console.log('SUCCESS! Auto email sent to', targetEmail);
+                        if (window.showToast) window.showToast('✅ Order confirmation email sent to ' + targetEmail);
+                    }, function (error) {
+                        console.log('FAILED to send auto email...', error);
+                        if (window.showToast) window.showToast('⚠️ Failed to send confirmation email. Check console.', 'error');
+                    });
+            } else {
+                console.warn('⚠️ EmailJS not loaded or no email provided.');
+            }
+
+
+            if (pricing.appliedPromoCode === 'FAN20') {
+                localStorage.setItem('hasUsedFan20', 'true');
+            }
+
+            localStorage.removeItem('fanverse_cart');
+            localStorage.removeItem('fanverse_checkout');
+            if (document.getElementById('track-order-btn')) {
+                document.getElementById('track-order-btn').href = `order-status.html?id=${oid}`;
+            }
+            updateCartBadge();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () {
+            // Replace 'YOUR_PUBLIC_KEY' with your EmailJS public key
+            // https://dashboard.emailjs.com/admin/account
+            emailjs.init("-8AiBDobQbJGzJhdl");
+        })();
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDz5qFi9Zubd3UNqwuIownQXWgC2adbDbI",
+            authDomain: "fanverse-deb8e.firebaseapp.com",
+            projectId: "fanverse-deb8e",
+            storageBucket: "fanverse-deb8e.firebasestorage.app",
+            messagingSenderId: "579296683474",
+            appId: "1:579296683474:web:7b5dd5a0bc78083666940b",
+            measurementId: "G-VRDF6RCFJ6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Expose a global function to save order to Firebase
+        window.saveOrderToFirebase = async function(orderData) {
+            try {
+                const docRef = await addDoc(collection(db, "orders"), orderData);
+                console.log("Order saved to Firebase with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding order to Firebase: ", e);
+            }
+        };
+    </script>
+</body>
+
+</html>

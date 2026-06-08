@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .edit-wrap {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 40px rgba(138, 43, 226, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--purple-light);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            margin: 0 auto 20px;
+            cursor: pointer;
+            border: 3px solid #111;
+            box-shadow: 0 0 0 2px var(--purple-light);
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="cart-btn" style="background:rgba(255,255,255,0.1);">👤 Account</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="edit-wrap">
+        <h1 style="text-align:center; font-family:'Outfit',sans-serif; margin-bottom:10px;">Edit Profile</h1>
+        <p style="text-align:center; color:var(--text-muted); margin-bottom:30px;">Update your personal details below.
+        </p>
+
+        <label for="avatar-upload">
+            <div class="avatar-circle" id="acc-initial" title="Upload new photo">A</div>
+        </label>
+        <input type="file" id="avatar-upload" accept="image/*" style="display:none;"
+            onchange="handleAvatarUpload(event)">
+
+        <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="edit-name" class="form-input" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" id="edit-user" class="form-input" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="edit-email" class="form-input" />
+        </div>
+        <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input type="password" id="edit-pass" class="form-input"
+                placeholder="Leave blank to keep current password" />
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:30px;">
+            <button class="btn btn-outline" style="flex:1; justify-content:center;"
+                onclick="window.location.href='account.html'">Cancel</button>
+            <button class="btn btn-primary" style="flex:1; justify-content:center;" onclick="saveChanges()">Save
+                Changes</button>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const u = getUser();
+            if (!u) return window.location.href = 'index.html';
+
+            document.getElementById('edit-name').value = u.name || '';
+            document.getElementById('edit-user').value = u.username || '';
+            document.getElementById('edit-email').value = u.email || '';
+
+            const initials = u.name ? u.name.charAt(0).toUpperCase() : 'U';
+            const accInitial = document.getElementById('acc-initial');
+            if (u.avatar) {
+                accInitial.textContent = '';
+                accInitial.style.backgroundImage = `url(${u.avatar})`;
+            } else {
+                accInitial.textContent = initials;
+            }
+        });
+
+        function handleAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const r = new FileReader();
+                r.onload = e => {
+                    document.getElementById('acc-initial').textContent = '';
+                    document.getElementById('acc-initial').style.backgroundImage = `url(${e.target.result})`;
+                    document.getElementById('acc-initial').dataset.avatar = e.target.result;
+                };
+                r.readAsDataURL(file);
+            }
+        }
+
+        function saveChanges() {
+            const u = getUser();
+            const n = document.getElementById('edit-name').value.trim();
+            const un = document.getElementById('edit-user').value.trim();
+            const e = document.getElementById('edit-email').value.trim();
+            const p = document.getElementById('edit-pass').value;
+            const avatar = document.getElementById('acc-initial').dataset.avatar;
+
+            if (!n || !un || !e) {
+                showToast('Please fill all required fields', 'error');
+                return;
+            }
+
+            u.name = n;
+            u.username = un;
+            u.email = e;
+            if (p) u.password = p;
+            if (avatar) u.avatar = avatar;
+
+            localStorage.setItem('currentUser', JSON.stringify(u));
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const idx = users.findIndex(x => x.email === u.email);
+            if (idx > -1) {
+                users[idx] = u;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            showToast('Profile updated!', 'success');
+            setTimeout(() => {
+                window.location.href = 'account.html';
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

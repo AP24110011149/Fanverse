@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help & Support — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .help-section {
+            padding: 80px 0;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 900px) {
+            .help-section {
+                flex-direction: column;
+            }
+        }
+
+        .contact-card {
+            background: rgba(30, 30, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            flex: 1;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .chatbox-wrap {
+            flex: 1;
+            background: rgba(15, 15, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 16px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-header {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(255, 45, 120, 0.2));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #chatbot-history {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 10px;
+        }
+
+        #chatbot-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 24px;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow"
+                    style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈
+                    Deal</a>
+                <a href="help.html" class="active">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="cart.html" class="cart-btn" id="cart-btn">🛒 Cart<span class="cart-badge" id="cart-badge"
+                        style="display:none">0</span></a>
+                <button class="btn btn-ghost btn-sm" onclick="logout()" style="font-size:0.8rem;">Logout</button>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb"><a href="products.html">Home</a><span>›</span><span>Help & Support</span></div>
+            <h1 class="heading-lg">Support Center</h1>
+            <p>Get in touch with us or chat with our FanVerse bot for quick answers.</p>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="container help-section">
+
+        <!-- Contact Details -->
+        <div class="contact-card">
+            <h2 class="heading-md" style="margin-bottom:24px;">Contact Information</h2>
+
+            <div class="contact-item">
+                <div style="color:var(--purple-light); font-size:1.8rem; margin-bottom:10px;">📞</div>
+                <h3 style="font-size:1.1rem; font-family:'Outfit'; font-weight:700; margin-bottom:6px;">Helpline</h3>
+                <p style="color:var(--text-muted); line-height:1.6;">Call us for urgent order issues or bulk inquiries.
+                    We are available weekdays 9am to 6pm.</p>
+                <div style="font-size:1.15rem; font-weight:800; color:#fff; margin-top:10px;">+91 7337440053</div>
+                <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:5px;">Contact Person: Charan
+                    Harsha<br>
+                    <a href="https://www.instagram.com/fanverseofficial10?igsh=ZDJ3MmY3d3BuOW5s" target="_blank"
+                        style="color:var(--text-secondary); text-decoration:underline;">Instagram:
+                        @fanverseofficial10</a>
+                </div>
+            </div>
+
+            <div class="contact-item">
+                <div style="color:var(--pink-light); font-size:1.8rem; margin-bottom:10px;">✉️</div>
+                <h3 style="font-size:1.1rem; font-family:'Outfit'; font-weight:700; margin-bottom:6px;">Email Support
+                </h3>
+                <p style="color:var(--text-muted); line-height:1.6;">Reach out for design assistance, tracking updates,
+                    or partnership queries.</p>
+                <div style="font-size:1.05rem; font-weight:600; color:#fff; margin-top:10px;"><a
+                        href="mailto:fanverse149@gmail.com"
+                        style="color:inherit; text-decoration:underline;">fanverse149@gmail.com</a></div>
+            </div>
+
+            <div class="contact-item">
+                <div style="color:#22c55e; font-size:1.8rem; margin-bottom:10px;">📍</div>
+                <h3 style="font-size:1.1rem; font-family:'Outfit'; font-weight:700; margin-bottom:6px;">Office Address
+                </h3>
+                <p style="color:var(--text-muted); line-height:1.6;">FanVerse Studios,<br />Vizag, Near Daba
+                    Gardens<br />Visakhapatnam, Andhra Pradesh 530020</p>
+            </div>
+        </div>
+
+        <!-- Chatbot Area -->
+        <div class="chatbox-wrap">
+            <div class="chat-header">
+                <div style="font-weight:700; font-family:'Outfit'; font-size:1.3rem; color:#fff;">FanVerse Support 🤖
+                </div>
+                <div style="font-size:0.85rem; color:#aaa; margin-top:4px;">Usually responds instantly</div>
+            </div>
+
+            <div id="chatbot-history">
+                <div
+                    style="background:rgba(138,43,226,0.2); align-self:flex-start; padding:12px 16px; border-radius:14px; border-bottom-left-radius:4px; max-width:85%; color:#e0e0e0; line-height:1.5;">
+                    Hi there! 👋 Welcome to our dedicated Help page. How can I assist you with your merch today?
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="chatbot-input" placeholder="Type a message...">
+                <button id="chatbot-send"
+                    style="background:linear-gradient(135deg, #8a2be2, #ff2d78); border:none; border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:white; font-size:1.2rem;">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 FanVerse. Student project for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+    <div class="toast-container"></div>
+    <script src="js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputEl = document.getElementById('chatbot-input');
+            const sendBtn = document.getElementById('chatbot-send');
+            const historyEl = document.getElementById('chatbot-history');
+
+            function addMessage(msg, isUser = false) {
+                const el = document.createElement('div');
+                el.style.padding = '12px 16px';
+                el.style.borderRadius = '14px';
+                el.style.maxWidth = '85%';
+                el.style.color = '#e0e0e0';
+                el.style.lineHeight = '1.5';
+
+                if (isUser) {
+                    el.style.background = 'rgba(255,45,120,0.2)';
+                    el.style.alignSelf = 'flex-end';
+                    el.style.borderBottomRightRadius = '4px';
+                } else {
+                    el.style.background = 'rgba(138,43,226,0.2)';
+                    el.style.alignSelf = 'flex-start';
+                    el.style.borderBottomLeftRadius = '4px';
+                }
+                el.textContent = msg;
+                historyEl.appendChild(el);
+                historyEl.scrollTop = historyEl.scrollHeight;
+            }
+
+            function getFallbackReply(text) {
+                let reply = "I'm still learning! For complex queries, reach out to Charan Harsha at +91 7337440053 or fanverse149@gmail.com.";
+                const lower = text.toLowerCase();
+
+                // Detailed Price Queries
+                if (lower.includes('price') || lower.includes('cost') || lower.includes('how much') || lower.includes('mrp')) {
+                    reply = "Here are our current prices: T-Shirts (₹749), Hoodies (₹1199), Sweatshirts (₹1099), Polos (₹849), and Half-Hand Shirts (₹899). Stickers are ₹199 each (or ₹299 for a Front+Back combo). Custom text is an additional ₹150. Shipping is FREE on all orders above ₹999! Best of all, FanVerse is GST-free!";
+                } else if (lower.includes('gst') || lower.includes('tax')) {
+                    reply = "FanVerse is GST-free! The price you see on the product page is exactly what you pay—no hidden taxes or surprising extra charges at checkout.";
+                }
+                // Individual Price Checks
+                else if (lower.includes('tshirt') || lower.includes('t-shirt')) {
+                    reply = "Our premium customizable T-shirts are priced at ₹749.";
+                } else if (lower.includes('hoodie')) {
+                    reply = "Our cozy heavy-fabric Hoodies are ₹1199.";
+                } else if (lower.includes('sweatshirt')) {
+                    reply = "Premium Sweatshirts are currently ₹1099.";
+                } else if (lower.includes('polo')) {
+                    reply = "Classic Collared Polos are ₹849.";
+                } else if (lower.includes('shirt')) {
+                    reply = "Lightweight Half-Hand Shirts are ₹899.";
+                } else if (lower.includes('sticker')) {
+                    reply = "Individual stickers in the Design Studio are ₹199. If you add stickers to both front and back, you get our ₹299 combo deal!";
+                }
+                // Features
+                else if (lower.includes('feature') || lower.includes('what can i do') || lower.includes('how does it work') || lower.includes('website') || lower.includes('explain')) {
+                    reply = "FanVerse is a high-tech merch experience! Key features include: (1) AI-Powered Design Studio with Dual Side customization, (2) One-click AI Background Removal for your photos, (3) Real-time Profanity filtering, (4) Secure Google Login, (5) Smart Geolocation at checkout, (6) 1st Week VIBGYOR Rainbow Deals, and (7) Live Order Tracking. We even use AI image moderation to keep everything family-friendly!";
+                }
+                // Customization Features
+                else if (lower.includes('custom') || lower.includes('design') || lower.includes('studio') || lower.includes('personalize')) {
+                    reply = "Our Design Studio is packed with power! You can customize Both Sides of your apparel. You can upload images—our AI will moderate them and even help you remove the background with one click! You can also add custom text (+₹150) with various fonts and colors. Use our corner handles to scale, rotate, and flip anything!";
+                }
+                // Rainbow Deal & Promo Codes
+                else if (lower.includes('rainbow') || lower.includes('deal') || lower.includes('vibgyor') || lower.includes('fan10') || lower.includes('discount') || lower.includes('promo') || lower.includes('fan20') || lower.includes('offer')) {
+                    if (lower.includes('fan20') || lower.includes('20%') || lower.includes('first time')) {
+                        reply = "New to FanVerse? Use promo code FAN20 for a one-time 20% OFF discount on your entire order! Just apply it in the cart.";
+                    } else {
+                        reply = "We have great offers! (1) Use code FAN20 for a one-time 20% discount for first-time shoppers! (2) The VIBGYOR Rainbow Deal runs during the 1st week of every month (10% OFF daily matching colors with code FAN10). All orders over ₹999 get FREE Shipping.";
+                    }
+                }
+                // Fan Edition
+                else if (lower.includes('fan edition') || lower.includes('exclusive') || lower.includes('may') || lower.includes('december') || lower.includes('sneaker')) {
+                    reply = "🔥 Fan Edition is our ultra-exclusive premium lineup dropping only on May 1st and December 1st! The collection includes limited-edition Sneakers and Shirts with unique serial numbers. Prices are revealed only on launch day!";
+                }
+                // Geolocation / Shipping
+                else if (lower.includes('shipping') || lower.includes('delivery') || lower.includes('map') || lower.includes('location') || lower.includes('address') || lower.includes('geolocation')) {
+                    reply = "We offer Free Shipping on orders over ₹999! Standard delivery takes 3-5 days. To make checkout faster, our smart map system can auto-detect your geolocation so you don't have to type your full address.";
+                }
+                // Tracking & Emails
+                else if (lower.includes('status') || lower.includes('track') || lower.includes('where is my order') || lower.includes('mail') || lower.includes('email') || lower.includes('confirm')) {
+                    reply = "Transparency is key! Once you place an order, an automated confirmation email will be sent to you immediately. You can then track your order live using your unique Order ID on our Tracking page.";
+                }
+                // Returns
+                else if (lower.includes('return') || lower.includes('refund')) {
+                    reply = "We offer easy 7-day returns for non-customized products! However, because customized items are made specifically for you, they cannot be returned unless they arrive damaged or defective.";
+                }
+                // Account / Login
+                else if (lower.includes('login') || lower.includes('account') || lower.includes('sign in') || lower.includes('google')) {
+                    reply = "Use our secure Google Login to instantly save your cart, custom designs, and order history across all your devices. No more lost designs!";
+                }
+                // Hi / Greeting
+                else if (lower.includes('hi ') || lower.includes('hello') || lower.includes('hey') || lower === 'hi' || lower === 'sup') {
+                    reply = "Hello there! 👋 I'm the FanVerse Support Bot. I can tell you all about our AI-powered Design Studio, specific product prices, the Rainbow Deal, or our exclusive Fan Edition drops. What’s on your mind?";
+                }
+                // Team Roles (Same as before)
+                else if (lower.includes('anshul')) { reply = "Anshul is our CEO and Founder!"; }
+                else if (lower.includes('gopi')) { reply = "Gopi Phaneendra is our Marketing Head!"; }
+                else if (lower.includes('ravi')) { reply = "Ravi Teja is the Product Development and Quality Head."; }
+                else if (lower.includes('praneeth')) { reply = "Praneeth is our Tech Head, leading all technical operations."; }
+                else if (lower.includes('charan') || lower.includes('insight') || lower.includes('customer insight')) { reply = "Charan Harsha is our Customer Insights Head! You can reach him directly at +91 7337440053."; }
+                else if (lower.includes('tanav')) { reply = "Tanav is our Fashion and Graphic Designer Head."; }
+                else if (lower.includes('mathin') || lower.includes('supply chain')) { reply = "Mathin is the Manufacturing and Supply Chain Lead."; }
+                else if (lower.includes('parun')) { reply = "Parun is our Legal Head."; }
+                else if (lower.includes('karthik')) { reply = "Karthik Vasan is our Finance Head."; }
+                else if (lower.includes('rakesh')) { reply = "Rakesh is our Creative Editor."; }
+                else if (lower.includes('rithvik')) { reply = "Rithvik Dhanesh is our Social Media Head."; }
+                else if (lower.includes('team') || lower.includes('staff') || lower.includes('roles') || lower.includes('employees')) {
+                    reply = "Our core team: Anshul (CEO), Gopi Phaneendra (Marketing), Ravi Teja (Product), Praneeth (Tech), Parun (Legal), Karthik Vasan (Finance), Rakesh (Creative Editor), Rithvik Dhanesh (Social Media), Charan Harsha (Insights), Tanav (Fashion/Design), and Mathin (Supply Chain).";
+                }
+                // Payments
+                else if (lower.includes('payment') || lower.includes('upi') || lower.includes('cod')) {
+                    reply = "We support UPI (GPay/PhonePe), Credit/Debit Cards, Net Banking, and Cash on Delivery (COD). All transactions are secured.";
+                }
+                // Creator
+                else if (lower.includes('created you') || lower.includes('designed you') || lower.includes('made you')) {
+                    reply = "I was developed by the amazing Tech Team at FanVerse, led by Praneeth, to help you with everything!";
+                }
+                // Colors
+                else if (lower.includes('color') || lower.includes('colour')) {
+                    reply = "We offer a wide range of premium colors, mainly featuring Black, White, Navy Blue, Maroon, and Heather Grey!";
+                }
+                // Sizes
+                else if (lower.includes('size')) {
+                    reply = "Our apparel comes in a complete range of sizes from S, M, L, XL, to XXL right now to ensure the perfect fit!";
+                }
+                // Content Filter / 18+
+                else if (lower.includes('filter') || lower.includes('profanity') || lower.includes('bad word') || lower.includes('18+') || lower.includes('nsfw') || lower.includes('adult')) {
+                    reply = "FanVerse enforces a strict family-friendly environment. Our real-time AI Image Moderation and Profanity Filter strictly blocks all 18+, NSFW, explicit, or harmful text and images from being uploaded or printed. Violations may result in account bans!";
+                }
+                // Reviews
+                else if (lower.includes('review') || lower.includes('rating') || lower.includes('star')) {
+                    reply = "Check out our 5-star verified reviews on every product page! We believe in total transparency and quality.";
+                }
+                // Customization Process
+                else if (lower.includes('customize') || lower.includes('how to design') || lower.includes('process')) {
+                    reply = "To customize a T-shirt, click 'Customize' in the top menu to open the Design Studio. Choose your product type, color, and size. You can then add our pre-made stickers or upload your own image. You can add your own text. You can even click 'Remove BG' to magically make stickers transparent! Once done, simply add to cart and checkout.";
+                }
+                // Community Hall of Fame
+                else if (lower.includes('community') || lower.includes('hall of fame') || lower.includes('vote for design')) {
+                    reply = "Our Community Hall of Fame showcases the best user-created designs! You can vote for your favorites using the heart buttons, and the 'Design of the Month' gets the top Spotlight. Click 'Community' in the top menu to see the trending designs, vote for them, or submit your own custom design to the leaderboard!";
+                }
+                // How many images
+                else if (lower.includes('how many image') || lower.includes('how many sticker') || lower.includes('add multiple')) {
+                    reply = "You can add up to 1 custom image/sticker on the front, and 1 on the back of any apparel item in our Design Studio!";
+                }
+                // Upcoming deals
+                else if (lower.includes('upcoming deal') || lower.includes('future offer') || lower.includes('next sale')) {
+                    reply = "Keep an eye out for our exclusive Fan Edition Drops launching on May 1st and December 1st! We also run new VIBGYOR Rainbow Deals during the first week of every month.";
+                }
+                // Contact members
+                else if (lower.includes('contact') || lower.includes('reach out') || lower.includes('talk to')) {
+                    reply = "You can contact our Customer Insights Head, Charan Harsha, directly at +91 7337440053 for direct support, or reach out to our team via our official social media pages!";
+                }
+                // Currently trending
+                else if (lower.includes('currently trending') || lower.includes('top design') || lower.includes('number one') || lower.includes('hall of fame currently')) {
+                    reply = "Our top trending Community designs right now are 'Varanasi' (T-Shirt), 'The OG Arrival' (Hoodie), and the 'Obito Uchiha Tee'. Check the Community page to see the full Hall of Fame layout!";
+                }
+                // Food
+                else if (lower.includes('food') || lower.includes('eat ') || lower.includes('groceries') || lower.includes('pizza') || lower.includes('burger')) {
+                    reply = "Haha, nice try! FanVerse is exclusively a premium custom apparel and merchandise platform. We specialize in custom hoodies, t-shirts, and stickers, not food delivery!";
+                }
+                // Love
+                else if (lower.includes('love you') || lower.includes('marry me')) {
+                    reply = "Aww, I love you too! 💜 But my heart strictly belongs to FanVerse's premium hoodies and custom tees! Let's get back to designing something awesome together.";
+                }
+                // Highest votes
+                else if (lower.includes('highest vote') || lower.includes('most vote') || lower.includes('design of the month') || lower.includes('top voted')) {
+                    reply = "The design with the highest votes right now is 'Nani\\'s Paradise' designed by Harsha, which secured an incredible 2,500 votes! It is currently featured as the 'Design of the Month' Spotlight on the Community page.";
+                }
+                // Order blank / without stickers
+                else if (lower.includes('without adding') || lower.includes('blank t') || lower.includes('no sticker') || lower.includes('plain')) {
+                    reply = "Absolutely! You can order premium, plain T-shirts, Hoodies, Sweatshirts, and Polos completely blank without adding any stickers or custom text. They look great on their own.";
+                }
+                // Why sneakers/pants aren't available
+                else if (lower.includes('snicker') || lower.includes('sneaker') || lower.includes('pant') || lower.includes('accessories') || lower.includes('not available')) {
+                    reply = "FanVerse is currently laser-focused on perfecting premium top-wear (Tees, Hoodies, Polos). However, we are actively planning to expand our store to include pants, sneakers, and other accessories in the near future!";
+                }
+                // Default
+                else {
+                    reply = "I'm not exactly sure about that specific detail, but I can help you with pricing, offers (like our FAN20 code), customization features, order tracking, or contact info! For complex queries, reach out to Charan Harsha at +91 7337440053.";
+                }
+
+                return reply;
+            }
+
+            async function handleSend() {
+                const text = inputEl.value.trim();
+                if (!text) return;
+                addMessage(text, true);
+                inputEl.value = '';
+
+                // Add typing indicator
+                const typingMsg = document.createElement('div');
+                typingMsg.style.padding = '12px 16px';
+                typingMsg.style.borderRadius = '14px';
+                typingMsg.style.maxWidth = '85%';
+                typingMsg.style.color = '#e0e0e0';
+                typingMsg.style.background = 'rgba(138,43,226,0.2)';
+                typingMsg.style.alignSelf = 'flex-start';
+                typingMsg.style.borderBottomLeftRadius = '4px';
+                typingMsg.textContent = 'Thinking... (AI Powered) 🤖';
+                historyEl.appendChild(typingMsg);
+                historyEl.scrollTop = historyEl.scrollHeight;
+
+                try {
+                    // Enter your Gemini API Key below
+                    const API_KEY = 'AIzaSyDM-KgLa8PJc6A0fj_EYPbqk8gcYswYLyw';
+
+                    if (API_KEY === 'YOUR_GEMINI_API_KEY') {
+                        throw new Error("API Key not set");
+                    }
+
+                    const systemPrompt = `You are FanVerse Bot, the official AI assistant for FanVerse. 
+PRICES: T-Shirts (₹749), Hoodies (₹1199), Sweatshirts (₹1099), Polos (₹849), Half-Hand Shirts (₹899), Stickers (₹199/each or ₹299 combo), Custom Text (+₹150). FREE shipping over ₹999. NOTE: FanVerse is GST-FREE (No hidden taxes).
+AVAILABLE COLORS: Black, White, Navy Blue, Maroon, Heather Grey. 
+AVAILABLE SIZES: S, M, L, XL, XXL.
+SHIPPING & DELIVERY: Standard delivery takes 3-5 days.
+PAYMENT MODES: UPI, Credit/Debit Cards, Net Banking, and COD.
+CREATOR: You were designed and developed by the FanVerse Tech Team (led by Praneeth).
+OFFERS AND DISCOUNTS: 
+1. NEW USER OFFER: Use promo code FAN20 for a one-time 20% discount on the entire order for first-time shoppers. 
+2. VIBGYOR Rainbow Deals: Runs during the 1st week of every month. Use code FAN10 for 10% OFF daily matching colors.
+FEATURES: (1) AI Design Studio with Front/Back customization, (2) One-click AI Background Removal for stickers, (3) Real-time Profanity & AI Image Moderation for safety, (4) Smart Map Geolocation for address detection, (5) Exclusive Fan Edition Drops (May 1, Dec 1), (6) Live Order Tracking, (7) Secure Google Login.
+COMMUNICATION: An automated confirmation email is sent immediately after an order is placed.
+ROLES: Anshul (CEO), Gopi Phaneendra (Marketing), Ravi Teja (Product), Praneeth (Tech), Charan Harsha (Insights - +91 7337440053), Tanav (Design), Mathin (Supply).
+HOW TO CUSTOMIZE: Go to Customize tab -> Select product type, color, size -> Upload a Custom Image or click an anime/Telugu sticker -> Add Custom Text -> Click Add to Cart. Users can also click "Remove BG" to automatically crop their stickers! Maximum 1 image on front, 1 on back. Users CAN order blank items without stickers/text.
+COMMUNITY HALL OF FAME: A page where users can view trending fan-made custom designs, vote for their favorites using a heart button, and aim to become the "Design of the Month" Spotlight. Users can submit their own designs from the Customize page. Current top 3: Varanasi, The OG Arrival, Obito Uchiha Tee.
+FAQ: Sneakers, pants, and accessories are not available right now because FanVerse focuses on premium top-wear, but plans to expand soon. Upcoming deals are Fan Edition Drops (May 1, Dec 1) and monthly VIBGYOR deals. Contact Charan Harsha for queries.
+Tone: Extremely friendly, concise, and helpful. Always explicitly mention "FAN20" when asked about offers, discounts, or promo codes.
+RULES: If a user asks an unnecessary/irrelevant question (like ordering food, sports, weather, general AI chat), playfully decline and state you are exclusively an AI assistant for FanVerse premium merchandise. If they ask a FanVerse-specific question that you truly do not know the answer to, explicitly tell them to reach out to our Customer Insights Head, Charan Harsha at +91 7337440053 for help.
+User asks: ${text}`;
+
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: systemPrompt }]
+                            }]
+                        })
+                    });
+
+                    typingMsg.remove();
+                    if (response.ok) {
+                        const data = await response.json();
+                        const reply = data.candidates[0].content.parts[0].text;
+                        addMessage(reply, false);
+                    } else {
+                        throw new Error("API error");
+                    }
+                } catch (err) {
+                    typingMsg.remove();
+                    if (err.message === "API Key not set") {
+                        addMessage("⚠️ Note: Currently operating offline. Please set your Gemini API key in help.html for AI support.", false);
+                    }
+                    setTimeout(() => addMessage(getFallbackReply(text), false), 400);
+                }
+            }
+
+            sendBtn.onclick = handleSend;
+            inputEl.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSend();
+            });
+        });
+    </script>
+</body>
+
+</html>

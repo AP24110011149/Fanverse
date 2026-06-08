@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .about-section {
+            padding: 80px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-card {
+            background: rgba(30, 30, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .about-logo {
+            font-size: 3rem;
+            font-weight: 900;
+            font-family: 'Outfit';
+            background: linear-gradient(135deg, var(--purple-light), var(--pink-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .about-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .mission-title {
+            font-family: 'Outfit';
+            font-weight: 700;
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            margin-top: 30px;
+        }
+
+        .ceo-quote-container {
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(255, 45, 120, 0.1));
+            border-left: 4px solid var(--pink-light);
+            border-radius: 12px;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+            font-family: serif;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .ceo-quote {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: #fff;
+            line-height: 1.5;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ceo-title {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--pink-light);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="cart.html" class="cart-btn" id="cart-btn">🛒 Cart<span class="cart-badge" id="cart-badge"
+                        style="display:none">0</span></a>
+                <button class="btn btn-ghost btn-sm" onclick="logout()" style="font-size:0.8rem;">Logout</button>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb"><a href="products.html">Home</a><span>›</span><span>About Us</span></div>
+            <h1 class="heading-lg">About FanVerse</h1>
+            <p>Our Story, Our Vision, and the Culture of Fandom.</p>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="container about-section">
+        <div class="about-card">
+            <div class="about-logo">✦ FanVerse</div>
+            
+            <p class="about-description">
+                Welcome to <strong>FanVerse</strong>—the ultimate destination designed exclusively for fans, by fans. 
+                Whether you're a die-hard otaku tracking the latest anime epics, a cinematic aficionado celebrating the legendary moments of the Tollywood Film Industry (TFI), or just someone who genuinely loves showing off their unique fandom, you've found your home.
+            </p>
+
+            <h2 class="mission-title">Our Mission</h2>
+            <p class="about-description">
+                Our mission is simple: to dissolve the boundaries between what you love and what you wear. We believe merchandise shouldn't just be mass-produced graphics on basic fabrics. It should be a personal canvas. At FanVerse, we offer high-quality customizable apparel ranging from everyday T-Shirts to Premium Sweatshirts.
+            </p>
+
+            <h2 class="mission-title">The FanVerse Edge</h2>
+            <p class="about-description" style="text-align: center;">
+                Premium Quality Fabrics <br>
+                Interactive 3D Customization Platform <br>
+                Hyper-Fast Delivery Ecosystem <br>
+                Dedicated Fan Edition Collections
+            </p>
+
+            <div class="ceo-quote-container">
+                <div class="quote-icon">“</div>
+                <div class="ceo-quote">Fashion is no longer bought, it is created.</div>
+                <div class="ceo-title">— CEO, FanVerse</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="help.html">Help Center</a>
+                <a href="admin.html">Admin</a>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 FanVerse. Custom Merch for Fans.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

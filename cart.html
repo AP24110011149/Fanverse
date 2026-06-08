@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart — FanVerse</title>
+    <meta name="description" content="Review your FanVerse shopping cart." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html" class="active">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="cart.html" class="cart-btn">🛒 Cart<span class="cart-badge" style="display:none">0</span></a>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb"><a href="products.html">Shop</a><span>›</span><span>Cart</span></div>
+            <h1 class="heading-lg">🛒 Your Cart</h1>
+            <p>Review your items before checkout</p>
+        </div>
+    </section>
+
+    <section style="padding:0 0 80px;">
+        <div class="container">
+            <div class="cart-layout">
+                <div>
+                    <div id="cart-empty" class="empty-state" style="display:none;">
+                        <div class="empty-icon">🛒</div>
+                        <h3>Your Cart is Empty</h3>
+                        <p>Looks like you haven't added anything yet!</p>
+                        <div style="display:flex;gap:12px;justify-content:center;">
+                            <a href="products.html" class="btn btn-outline">Browse Shop</a>
+                            <a href="customize.html" class="btn btn-primary">Design Custom Merch</a>
+                        </div>
+                    </div>
+                    <div id="cart-list"></div>
+                    <div style="display:flex;gap:12px;margin-top:16px;">
+                        <a href="products.html" class="btn btn-ghost">← Continue Shopping</a>
+                    </div>
+                </div>
+
+                <div class="order-summary-card">
+                    <h2
+                        style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+                        Order Summary</h2>
+                    <div class="order-row"><span>Subtotal</span><span id="summary-subtotal">₹0</span></div>
+                    <div class="order-row"><span>GST (0%)</span><span id="summary-gst">₹0</span></div>
+                    <div class="order-row"><span>Shipping</span><span id="summary-shipping">₹0</span></div>
+                    <div class="order-row" id="promo-row" style="color:#22c55e; display:none;"><span>Promo
+                            Discount</span><span id="summary-promo">-₹0</span></div>
+                    <div class="order-total">
+                        <span>Grand Total</span><span id="summary-total">₹0</span>
+                    </div>
+
+                    <div style="margin-top:14px; margin-bottom:14px;">
+                        <div style="display:flex;gap:8px;">
+                            <input type="text" id="promo-code" class="glass-input" placeholder="Promo code (e.g. FAN10)"
+                                style="margin-bottom:0;" />
+                            <button class="btn btn-outline" onclick="applyPromo()">Apply</button>
+                        </div>
+                        <div id="promo-msg" style="font-size:0.8rem; margin-top:6px; font-weight:600;"></div>
+                    </div>
+
+                    <a href="checkout.html" class="btn btn-primary btn-lg"
+                        style="width:100%;justify-content:center;margin-top:20px;">
+                        Proceed to Checkout →
+                    </a>
+                    <div style="text-align:center;margin-top:12px;font-size:0.76rem;color:var(--text-muted);">
+                        🔒 Secure checkout &nbsp;|&nbsp; 🚚 Free shipping above ₹999
+                    </div>
+                    <div style="display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:1.3rem;">
+                        <span title="UPI">📱</span><span title="Card">💳</span><span title="Net Banking">🏦</span><span
+                            title="COD">💰</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>© 2026 FanVerse. Student project for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+    <div class="toast-container"></div>
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop — FanVerse</title>
+    <meta name="description"
+        content="Browse all FanVerse fan merchandise — T-shirts, Hoodies, Pants, and Sticker collections." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .star-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin: 6px 0;
+        }
+
+        .stars {
+            color: #f0c040;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .star-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .price-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .price-mrp {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .price-off {
+            font-size: 0.75rem;
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-weight: 600;
+        }
+
+        .price-final {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        .review-snippet {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            font-size: 0.68rem;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .tag-anime {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+        }
+
+        .tag-tfi {
+            background: rgba(240, 192, 64, 0.12);
+            color: #f0c040;
+            border: 1px solid rgba(240, 192, 64, 0.25);
+        }
+
+        .tag-plain {
+            background: rgba(100, 100, 120, 0.15);
+            color: #909090;
+            border: 1px solid rgba(100, 100, 120, 0.2);
+        }
+
+        .tag-new {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        /* Fade-up animation for cards */
+        .card-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .card-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Color dots */
+        .color-dots {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .color-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Filter Refinements */
+        .filter-sidebar {
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            width: 260px;
+            flex-shrink: 0;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-group {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .filter-group:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-label {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .filter-check {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+        }
+
+        .filter-check:hover {
+            color: #fff;
+        }
+
+        .filter-check input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .filter-check input[type="checkbox"]:checked {
+            background: var(--purple);
+            border-color: var(--purple-light);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .filter-check input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+        .price-range {
+            width: 100%;
+            accent-color: var(--purple);
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .sort-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .sort-select:focus {
+            border-color: var(--purple);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html" class="active">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <div class="nav-search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Search..." id="prod-search" />
+                </div>
+                <a href="cart.html" class="cart-btn" id="cart-btn">🛒 Cart<span class="cart-badge" id="cart-badge"
+                        style="display:none">0</span></a>
+                <button class="btn btn-ghost btn-sm" onclick="logout()" style="font-size:0.8rem;">Logout</button>
+            </div>
+        </div>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb"><a href="products.html">Home</a><span>›</span><span>Shop</span></div>
+            <h1 class="heading-lg">All Products</h1>
+            <p>Customize any product with your favourite stickers — Anime or TFI</p>
+        </div>
+    </section>
+
+    <!-- Catalog -->
+    <section class="section-pad" style="padding-top:0;">
+        <div class="container">
+            <div style="display:flex;gap:28px;align-items:flex-start;">
+
+                <!-- Filter Sidebar -->
+                <aside class="filter-sidebar">
+                    <div class="filter-group">
+                        <div class="filter-label">Category</div>
+                        <div class="filter-options">
+                            <label class="filter-check"><input type="checkbox" value="tshirt" checked
+                                    onchange="applyFilters()" /><span>T-Shirts</span></label>
+                            <label class="filter-check"><input type="checkbox" value="hoodie" checked
+                                    onchange="applyFilters()" /><span>Hoodies</span></label>
+                            <label class="filter-check"><input type="checkbox" value="sweatshirt" checked
+                                    onchange="applyFilters()" /><span>Sweatshirts</span></label>
+                            <label class="filter-check"><input type="checkbox" value="polo" checked
+                                    onchange="applyFilters()" /><span>Polo / Collared</span></label>
+                            <label class="filter-check"><input type="checkbox" value="shirt" checked
+                                    onchange="applyFilters()" /><span>Shirts</span></label>
+                            <label class="filter-check"><input type="checkbox" value="sticker" checked
+                                    onchange="applyFilters()" /><span>Stickers</span></label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Theme</div>
+                        <div class="filter-options">
+                            <label class="filter-check"><input type="checkbox" value="anime" checked
+                                    onchange="applyFilters()" /><span>Anime</span></label>
+                            <label class="filter-check"><input type="checkbox" value="tfi" checked
+                                    onchange="applyFilters()" /><span>TFI Movies</span></label>
+                            <label class="filter-check"><input type="checkbox" value="plain" checked
+                                    onchange="applyFilters()" /><span>Plain</span></label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Max Price: <span id="price-label">₹2000</span></div>
+                        <input type="range" class="price-range" id="price-range" min="300" max="2000" value="2000"
+                            oninput="updatePriceLabel(this);applyFilters()" />
+                        <div
+                            style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-top:6px;">
+                            <span>₹300</span><span>₹2000</span>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Rating</div>
+                        <div class="filter-options">
+                            <label class="filter-check"><input type="checkbox" value="4"
+                                    onchange="applyFilters()" /><span>⭐ 4+ Stars</span></label>
+                            <label class="filter-check"><input type="checkbox" value="45"
+                                    onchange="applyFilters()" /><span>⭐ 4.5+ Stars</span></label>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <div class="filter-label">Sort By</div>
+                        <select class="sort-select" id="sort-select" onchange="applyFilters()">
+                            <option value="default">Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="rating">Rating</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%;margin-top:12px;justify-content:center;"
+                        onclick="resetFilters()">Reset Filters</button>
+                </aside>
+
+                <!-- Grid -->
+                <div style="flex:1;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+                        <span style="font-size:0.85rem;color:var(--text-muted);" id="result-count">Loading…</span>
+                    </div>
+                    <div id="product-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;"></div>
+                    <div id="no-results" style="display:none;">
+                        <div class="empty-state">
+                            <div class="empty-icon">🔍</div>
+                            <h3>No Products Found</h3>
+                            <p>Try adjusting your filters.</p>
+                            <button class="btn btn-outline" onclick="resetFilters()">Clear Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>© 2026 FanVerse. Student project for educational purposes. All trademarks belong to their
+                    respective
+                    owners.</p>
+                <div style="display:flex;gap:16px;">
+                    <a href="customize.html" style="color:var(--text-muted);font-size:0.85rem;">Customize</a>
+                    <a href="cart.html" style="color:var(--text-muted);font-size:0.85rem;">Cart</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="toast-container"></div>
+    <script src="js/main.js"></script>
+    <script>
+        function logout() { localStorage.removeItem('fanverseLoggedIn'); sessionStorage.removeItem('fanverseLoggedIn'); window.location.href = 'index.html'; }
+        // Data now provided by js/data.js
+
+        function avgRating(rev) { return rev ? (rev.reduce((s, r) => s + r.stars, 0) / rev.length).toFixed(1) : null; }
+        function starHtml(avg) {
+            const full = Math.floor(avg), half = (avg - full) >= 0.4, empty = 5 - full - (half ? 1 : 0);
+            return '★'.repeat(full) + (half ? '½' : '') + ('☆'.repeat(empty));
+        }
+
+        function discPct(mrp, price) { return Math.round((mrp - price) / mrp * 100); }
+
+        function renderCard(p) {
+            const rev = p.reviews ? REVIEWS[p.reviews] : null;
+            const avg = p.rating ? p.rating : (rev ? parseFloat(avgRating(rev)) : null);
+            const snippet = rev ? rev[0].text : '';
+            const colorDots = p.colors.slice(0, 6).map(c => `<div class="color-dot" style="background:${c};"></div>`).join('');
+            const tags = [];
+            if (p.theme === 'anime') tags.push('<span class="tag tag-anime">Anime</span>');
+            if (p.theme === 'tfi') tags.push('<span class="tag tag-tfi">TFI</span>');
+            if (p.theme === 'plain') tags.push('<span class="tag tag-plain">Plain</span>');
+            if (p.badge === 'New') tags.push('<span class="tag tag-new">New</span>');
+
+            return `
+  <div class="product-card card-reveal" data-name="${p.name}" onclick="viewProduct(${p.id})" style="cursor:pointer;">
+    <div class="product-img-wrap">
+      ${p.badge && p.badge !== 'New' ? `<span class="product-badge">${p.badge}</span>` : ''}
+      <img src="${p.img}" alt="${p.name}" loading="lazy" />
+    </div>
+    <div class="product-info">
+      <div class="tag-row">${tags.join('')}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-desc">${p.desc}</div>
+      ${avg ? `
+      <div class="star-row">
+        <span class="stars">${starHtml(avg)}</span>
+        <span class="star-count">${avg} (${rev ? rev.length : '—'}${rev ? '+' : ''} reviews)</span>
+      </div>` : ''}
+      ${snippet ? `<div class="review-snippet">"${snippet}"</div>` : ''}
+      ${colorDots ? `<div class="color-dots" style="margin-top:8px;">${colorDots}</div>` : ''}
+      <div class="product-footer" style="margin-top:10px;">
+        <div>
+          <div class="price-wrap">
+            <span class="price-mrp">₹${p.mrp.toLocaleString('en-IN')}</span>
+            <span class="price-final">₹${p.price.toLocaleString('en-IN')}</span>
+            <span class="price-off">${discPct(p.mrp, p.price)}% off</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();quickCart(${p.id})">🛒</button>
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();viewProduct(${p.id})">View</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+        }
+
+        function viewProduct(id) { window.location.href = `product-detail.html?id=${id}`; }
+
+        function quickCart(id) {
+            const p = PRODUCTS.find(x => x.id === id);
+            if (!p) return;
+            addToCartSimple(p.name, p.price, p.img, `${p.cat} · ${p.theme}`);
+        }
+
+        function renderGrid(data) {
+            const grid = document.getElementById('product-grid');
+            const noRes = document.getElementById('no-results');
+            const cnt = document.getElementById('result-count');
+            if (!data.length) { grid.innerHTML = ''; noRes.style.display = 'block'; cnt.textContent = '0 products'; return; }
+            noRes.style.display = 'none';
+            cnt.textContent = `Showing ${data.length} product${data.length !== 1 ? 's' : ''}`;
+            grid.innerHTML = data.map(renderCard).join('');
+            // observe for reveal
+            document.querySelectorAll('.card-reveal').forEach((el, i) => {
+                el.style.transitionDelay = (i % 3 * 0.1) + 's';
+                const obs = new IntersectionObserver(entries => {
+                    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+                }, { threshold: 0.08 });
+                obs.observe(el);
+            });
+        }
+
+        function applyFilters() {
+            const cats = [...document.querySelectorAll('input[value="tshirt"],input[value="hoodie"],input[value="sweatshirt"],input[value="polo"],input[value="shirt"],input[value="sticker"]')].filter(i => i.checked).map(i => i.value);
+            const themes = [...document.querySelectorAll('input[value="anime"],input[value="tfi"],input[value="plain"]')].filter(i => i.checked).map(i => i.value);
+            const max = parseInt(document.getElementById('price-range').value);
+            const sort = document.getElementById('sort-select').value;
+            const search = (document.getElementById('prod-search')?.value || '').toLowerCase();
+            const ratingFilters = [...document.querySelectorAll('input[value="4"],input[value="45"]')].filter(i => i.checked).map(i => parseFloat(i.value === '45' ? '4.5' : i.value));
+
+            let filtered = PRODUCTS.filter(p => {
+                const rev = p.reviews ? REVIEWS[p.reviews] : null;
+                const avg = p.rating || (rev ? parseFloat(avgRating(rev)) : 0);
+                const passRating = !ratingFilters.length || ratingFilters.some(r => avg >= r);
+                return cats.includes(p.cat) && themes.includes(p.theme) && p.price <= max && p.name.toLowerCase().includes(search) && passRating;
+            });
+
+            if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+            if (sort === 'rating') filtered.sort((a, b) => {
+                const ra = a.rating || (a.reviews ? parseFloat(avgRating(REVIEWS[a.reviews])) : 0);
+                const rb = b.rating || (b.reviews ? parseFloat(avgRating(REVIEWS[b.reviews])) : 0);
+                return rb - ra;
+            });
+            renderGrid(filtered);
+        }
+
+        function updatePriceLabel(el) { document.getElementById('price-label').textContent = '₹' + el.value; }
+
+        function resetFilters() {
+            document.querySelectorAll('input[type=checkbox]').forEach(c => { if (['tshirt', 'hoodie', 'sweatshirt', 'polo', 'shirt', 'sticker', 'anime', 'tfi', 'plain'].includes(c.value)) c.checked = true; else c.checked = false; });
+            document.getElementById('price-range').value = 2000;
+            document.getElementById('price-label').textContent = '₹2000';
+            document.getElementById('sort-select').value = 'default';
+            if (document.getElementById('prod-search')) document.getElementById('prod-search').value = '';
+            applyFilters();
+        }
+
+        // Search
+        document.getElementById('prod-search')?.addEventListener('input', applyFilters);
+
+        // Init
+        applyFilters();
+
+        // URL param pre-filter
+        const urlCat = new URLSearchParams(location.search).get('cat');
+        if (urlCat) {
+            document.querySelectorAll('input[type=checkbox]').forEach(c => {
+                if (['tshirt', 'hoodie', 'sweatshirt', 'polo', 'shirt', 'sticker'].includes(c.value)) c.checked = (c.value === urlCat.replace(/s$/, ''));
+            });
+            applyFilters();
+        }
+    </script>
+</body>
+
+</html>

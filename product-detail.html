@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Detail — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            padding-top: calc(var(--nav-h)+40px);
+            padding-bottom: 80px;
+        }
+
+        .detail-img-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 420px;
+        }
+
+        .detail-img-wrap img {
+            max-height: 380px;
+            object-fit: contain;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+
+        .price-mrp {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .price-final {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            background: var(--grad-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-off {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 1px solid rgba(34, 197, 94, 0.25);
+        }
+
+        .star-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars-lg {
+            color: #f0c040;
+            font-size: 1.3rem;
+        }
+
+        .review-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        .reviewer-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .reviewer-stars {
+            color: #f0c040;
+            font-size: 0.85rem;
+            margin: 3px 0;
+        }
+
+        .reviewer-text {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .color-swatch2 {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .color-swatch2.active {
+            border-color: #8a2be2;
+            box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+            transform: scale(1.2);
+        }
+
+        @media(max-width:900px) {
+            .detail-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cloth-pill.active {
+            border-color: var(--purple) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="cart.html" class="cart-btn">🛒 Cart<span class="cart-badge" style="display:none">0</span></a>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <div class="container">
+        <div style="padding-top:calc(var(--nav-h)+20px);">
+            <div class="breadcrumb"><a href="products.html">Shop</a><span>›</span><span id="bc-name">Product</span>
+            </div>
+        </div>
+        <div class="detail-layout" id="detail-layout">
+            <div style="text-align:center;padding:80px;color:var(--text-muted);">Loading…</div>
+        </div>
+    </div>
+
+    <!-- Size Chart Modal -->
+    <div id="size-modal" class="modal-overlay"
+        style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+        <div class="modal-content"
+            style="background:#111; border:1px solid #333; border-radius:12px; padding:30px; max-width:600px; width:90%; position:relative; box-shadow:0 10px 40px rgba(138,43,226,0.3);">
+            <button onclick="document.getElementById('size-modal').style.display='none'"
+                style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            <h2 id="modal-title"
+                style="font-family:'Outfit',sans-serif; margin-bottom:20px; color:var(--purple-light);">Size Guide</h2>
+            <div id="modal-body" style="color:var(--text-muted); line-height:1.6;"></div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <section class="section-pad" style="padding-top:0;">
+        <div class="container">
+            <h2 class="heading-md" style="margin-bottom:24px; display:none;" id="review-title"></h2>
+            <div id="review-list"></div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>© 2026 FanVerse. Student project for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+    <div class="toast-container"></div>
+    <script src="js/main.js"></script>
+    <script>
+        function starHtml(avg, size = '') {
+            const full = Math.floor(avg), half = (avg - full) >= 0.4, empty = 5 - full - (half ? 1 : 0);
+            return '★'.repeat(full) + (half ? '½' : '') + ('☆'.repeat(empty));
+        }
+
+        // Load product from URL + data.js
+        window.applyFilterToImg = function (c) {
+            const img = document.getElementById('main-product-img');
+            if (!img) return;
+            c = c.toLowerCase();
+
+            // Convert Hex to RGB then to HSL to find hue offset
+            const hexToHsl = (hex) => {
+                let r = parseInt(hex.slice(1, 3), 16) / 255;
+                let g = parseInt(hex.slice(3, 5), 16) / 255;
+                let b = parseInt(hex.slice(5, 7), 16) / 255;
+                let max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+                if (max === min) h = s = 0; // achromatic
+                else {
+                    let d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                return [h * 360, s, l];
+            };
+
+            const [targetH, targetS, targetL] = hexToHsl(c);
+
+            // Base image is roughly Hue: 230, Sat: 65, Lightness: 30
+            const hueRotate = targetH - 230;
+            const saturate = (targetS / 0.65) * 100;
+
+            let filterStr = 'none';
+            if (targetS < 0.1 && targetL < 0.2) filterStr = 'grayscale(100%) brightness(30%)'; // Black-ish
+            else if (targetS < 0.1 && targetL > 0.8) filterStr = 'grayscale(100%) brightness(250%)'; // White-ish
+            else if (c === '#1a237e') filterStr = 'none'; // Unaltered blue
+            else filterStr = `hue-rotate(${hueRotate}deg) saturate(${Math.min(targetS * 200 + 100, 300)}%) brightness(${targetL > 0.5 ? 120 : 80}%)`;
+
+            img.style.filter = filterStr;
+        };
+        const pid = parseInt(new URLSearchParams(location.search).get('id'));
+        const products = PRODUCTS;
+        const p = products.find(x => x.id === pid);
+
+        if (!p) {
+            document.getElementById('detail-layout').innerHTML = '<div style="padding:80px;text-align:center;color:var(--text-muted);"><p>Product not found. <a href="products.html" style="color:var(--purple-light);">Back to shop</a></p></div>';
+        } else {
+            document.title = p.name + ' — FanVerse';
+            document.getElementById('bc-name').textContent = p.name;
+
+            const rev = p.reviews ? REVIEWS[p.reviews] : null;
+            const avg = p.rating || (rev ? (rev.reduce((s, r) => s + r.stars, 0) / rev.length).toFixed(1) : null);
+            const disc = Math.round((p.mrp - p.price) / p.mrp * 100);
+            let colorSwatches = '';
+            if (p.cat === 'tshirt' || p.cat === 'hoodie') {
+                colorSwatches = `
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 10px rgba(138,43,226,0.5);">
+                        <input type="color" value="#1a237e" oninput="applyFilterToImg(this.value)" style="opacity: 0; width: 100%; height: 100%; cursor: pointer;" title="Pick Custom Color">
+                    </div>
+                `;
+            } else {
+                colorSwatches = p.colors.map((c, i) => {
+                    let imgPath = p.colorImgs ? p.colorImgs[i] : p.img;
+                    let cName = p.colorNames ? p.colorNames[i] : c;
+                    return `<div class="color-swatch2 ${i === 0 ? 'active' : ''}" style="background:${c}" title="${cName}" onclick="this.parentNode.querySelectorAll('.color-swatch2').forEach(x=>x.classList.remove('active'));this.classList.add('active');selectedColor='${c}';if(document.getElementById('main-product-img')) document.getElementById('main-product-img').src='${imgPath}';"></div>`;
+                }).join('');
+            }
+            const sizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
+            const sizePills = p.cat !== 'sticker' ? sizes.map((s, i) => `<button class="size-pill ${i === 2 ? 'active' : ''}"
+        onclick="this.parentNode.querySelectorAll('.size-pill').forEach(x=>x.classList.remove('active'));this.classList.add('active');selectedSize='${s}';">${s}</button>`).join('')
+                : '';
+            const clothPills = p.clothTypes ? p.clothTypes.map((c, i) => `<button class="cloth-pill ${i === 0 ? 'active' : ''}"
+        style="padding: 6px 12px; border: 1px solid var(--border); background: transparent; color: var(--text); border-radius: var(--radius-sm); cursor: pointer;"
+        onclick="this.parentNode.querySelectorAll('.cloth-pill').forEach(x=>x.style.borderColor='var(--border)');this.style.borderColor='var(--purple)';this.parentNode.querySelectorAll('.cloth-pill').forEach(x=>x.classList.remove('active'));this.classList.add('active');selectedCloth='${c}';">${c}</button>`).join('')
+                : '';
+
+            let selectedColor = p.colors[0] || '';
+            let selectedSize = 'M';
+            let selectedCloth = p.clothTypes ? p.clothTypes[0] : '';
+
+            document.getElementById('detail-layout').innerHTML = `
+    <div class="detail-img-wrap reveal">
+        <img id="main-product-img" src="${p.img}" alt="${p.name}" />
+    </div>
+    <div class="reveal">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+            <span
+                class="badge badge-${p.theme === 'anime' ? 'purple' : p.theme === 'tfi' ? 'gold' : 'purple'}">${p.theme
+                    === 'anime' ? '🎌 Anime' : p.theme === 'tfi' ? '🎬 TFI' : 'Plain'}</span>
+            ${p.badge && p.badge !== 'New' ? `<span class="badge badge-pink">${p.badge}</span>` : ''}
+            ${p.cat !== 'sticker' ? `<span class="badge" style="background:#4b5563;color:#fff;">⚤ Unisex</span>` : ''}
+        </div>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:6px;">${p.name}</h1>
+        <p style="color:var(--text-muted);margin-bottom:8px;">${p.desc}</p>
+        ${avg ? `<div class="star-display" style="margin-bottom:4px;"><span
+                class="stars-lg">${starHtml(avg)}</span><span style="font-size:0.9rem;color:var(--text-muted);">${avg} ·
+                ${rev ? rev.length + ' reviews' : 'rated'}</span></div>` : ''}
+        <div class="price-row">
+            <span class="price-mrp">₹${p.mrp.toLocaleString('en-IN')}</span>
+            <span class="price-final">₹${p.price.toLocaleString('en-IN')}</span>
+            <span class="price-off">${disc}% off</span>
+        </div>
+        ${(p.colors.length || p.cat === 'tshirt' || p.cat === 'hoodie') ? `<div class="option-label"
+            style="margin-top:18px;font-size:0.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">
+            Color</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">${colorSwatches}</div>` : ''}
+        ${clothPills ? `<div class="option-label"
+            style="margin-top:18px;font-size:0.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">
+            Fabric / Type</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">${clothPills}</div>` : ''}
+        ${sizePills ? `<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:18px;">
+            <div class="option-label"
+                style="font-size:0.8rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">
+                Size</div>
+            <button
+                style="background:transparent; border:none; color:var(--purple-light); font-size:0.8rem; cursor:pointer; text-decoration:underline;"
+                onclick="openSizeChart('${p.cat}')">📐 Size Guide</button>
+        </div>
+        <div class="size-pills" style="margin-top:10px;">${sizePills}</div>` : ''}
+        <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-lg" onclick="addProductToCart()">🛒 Add to Cart</button>
+            <a href="customize.html?product=${p.cat}" class="btn btn-outline btn-lg">🎨 Customize</a>
+        </div>
+        <div
+            style="margin-top:20px;padding:16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius-md);font-size:0.82rem;color:var(--text-muted);line-height:1.8;">
+            ✅ Completely Free Delivery &nbsp;|&nbsp; 🚚 3–5 day delivery<br />
+            ↩️ Easy returns &nbsp;|&nbsp; 🔒 Secure checkout
+        </div>
+    </div>
+            `;
+
+            window.addProductToCart = function () {
+                const sz = document.querySelector('.size-pill.active')?.textContent || 'M';
+                const col = document.querySelector('.color-swatch2.active')?.style.background || p.colors[0] || '';
+                const cloth = document.querySelector('.cloth-pill.active')?.textContent || '';
+                const variantString = [sz, col, cloth].filter(Boolean).join(' · ');
+                addToCartSimple(p.name, p.price, p.img, variantString);
+            };
+
+            // Reviews
+            if (rev) {
+                document.getElementById('review-title').textContent = `⭐ Customer Reviews(${rev.length})`;
+                document.getElementById('review-title').style.display = 'block';
+                document.getElementById('review-list').innerHTML = rev.map(r => `
+            <div class="review-card reveal">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+                <div class="reviewer-name">${r.name}</div>
+                <div class="reviewer-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+            </div>
+            <span style="font-size:0.75rem;color:var(--text-muted);">Verified Purchase ✅</span>
+        </div>
+        <p class="reviewer-text" style="margin-top:10px;">"${r.text}"</p>
+    </div>
+                `).join('');
+            }
+
+            // Reveal
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+            }, 100);
+        }
+
+        function openSizeChart(cat) {
+            const modal = document.getElementById('size-modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            modal.style.display = 'flex';
+
+            let chartTitle = "Size Guide";
+            if (cat === 'tshirt') chartTitle = "T-Shirt Size Guide";
+            else if (cat === 'hoodie') chartTitle = "Hoodie Size Guide";
+            else if (cat === 'sweatshirt') chartTitle = "Sweatshirt Size Guide";
+            else if (cat === 'polo') chartTitle = "Polo Size Guide";
+            else if (cat === 'shirt') chartTitle = "Shirt Size Guide";
+
+            if (cat === 'jeans' || cat === 'pants') {
+                title.textContent = "Pant Size Guide";
+                body.innerHTML = `
+                    <p style="margin-bottom:15px;">Please refer to the chart below to find your perfect fit.</p>
+                    <div style="background:#fff; padding:10px; border-radius:8px;">
+                        <img src="img/Pant Size Chart.png" style="width:100%; height:auto;" alt="Pant Size Chart">
+                    </div>
+            `;
+            } else {
+                title.textContent = chartTitle;
+                body.innerHTML = `
+                    <p style="margin-bottom:15px;">Measurements are in inches. Standard fit.</p>
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <tr style="border-bottom:1px solid #333;">
+                            <th style="padding:10px 0; color:#fff;">Size</th>
+                            <th style="padding:10px 0; color:#fff;">Chest</th>
+                            <th style="padding:10px 0; color:#fff;">Length</th>
+                        </tr>
+                        <tr style="border-bottom:1px solid #222;">
+                            <td style="padding:10px 0;">S</td>
+                            <td>38"</td>
+                            <td>27"</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #222;">
+                            <td style="padding:10px 0;">M</td>
+                            <td>40"</td>
+                            <td>28"</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #222;">
+                            <td style="padding:10px 0;">L</td>
+                            <td>42"</td>
+                            <td>29"</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #222;">
+                            <td style="padding:10px 0;">XL</td>
+                            <td>44"</td>
+                            <td>30"</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #222;">
+                            <td style="padding:10px 0;">2XL</td>
+                            <td>46"</td>
+                            <td>31"</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #222;">
+                            <td style="padding:10px 0;">3XL</td>
+                            <td>48"</td>
+                            <td>32"</td>
+                        </tr>
+                    </table>
+    `;
+            }
+        }
+    </script>
+</body>
+
+</html>

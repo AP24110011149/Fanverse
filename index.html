@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FanVerse | Official Store</title>
+  <meta name="description"
+    content="FanVerse — Custom fan merchandise for anime and TFI fans. Login to access the store." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #000;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* ── Loader ─────────────────────────────── */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      animation: loaderExit 0.9s ease forwards;
+      animation-delay: 2s;
+    }
+
+    .loader-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: pulseGlow 1.5s ease infinite;
+    }
+
+    .loader-sub {
+      margin-top: 12px;
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: #555;
+      text-transform: uppercase;
+    }
+
+    .loader-bar-wrap {
+      margin-top: 32px;
+      width: 200px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .loader-bar {
+      height: 100%;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      border-radius: 3px;
+      animation: loadBar 2s ease forwards;
+    }
+
+    @keyframes loadBar {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes loaderExit {
+      to {
+        transform: translateY(-105%);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 12px rgba(138, 43, 226, 0.6));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 28px rgba(255, 45, 120, 0.8));
+      }
+    }
+
+    /* ── Navbar ─────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 22px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: navIn 0.9s ease forwards;
+      animation-delay: 2.8s;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(138, 43, 226, 0.15);
+    }
+
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .nav-links-right a {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    .nav-links-right a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .btn-nav-login {
+      background: linear-gradient(135deg, #8a2be2, #ff2d78) !important;
+      color: #fff !important;
+      font-weight: 600;
+    }
+
+    /* ── Hero ───────────────────────────────── */
+    .hero {
+      height: 100vh;
+      background: url('img/hero_banner.png') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      padding: 0 8%;
+      opacity: 0;
+      animation: heroIn 1.2s ease forwards;
+      animation-delay: 2.4s;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 45%, rgba(0, 0, 0, 0.3) 100%),
+        linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 50%);
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(138, 43, 226, 0.25), transparent 70%);
+      top: -60px;
+      right: 5%;
+    }
+
+    .orb-2 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(255, 45, 120, 0.18), transparent 70%);
+      bottom: 10%;
+      left: 40%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .badge-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(138, 43, 226, 0.15);
+      border: 1px solid rgba(138, 43, 226, 0.35);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #c084fc;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+      animation-delay: 3.1s;
+      margin-bottom: 20px;
+    }
+
+    .epic-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+
+    .word {
+      opacity: 0;
+      display: inline-block;
+    }
+
+    .w1 {
+      animation: fadeUp 0.9s ease forwards;
+      animation-delay: 3.4s;
+    }
+
+    .w2 {
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fadeUp 0.9s ease forwards;
+      animation-delay: 4s;
+    }
+
+    .w3 {
+      animation: fadeUp 0.9s ease forwards;
+      animation-delay: 4.5s;
+    }
+
+    .divider {
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      border-radius: 3px;
+      margin: 22px 0;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+      animation-delay: 5.2s;
+    }
+
+    .tagline {
+      font-size: 1.15rem;
+      color: #c0c0d0;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+      animation-delay: 5.8s;
+      margin-bottom: 36px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+      animation-delay: 6.4s;
+    }
+
+    .btn-enter {
+      padding: 14px 36px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 28px rgba(138, 43, 226, 0.4);
+      transition: 0.3s;
+    }
+
+    .btn-enter:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 36px rgba(138, 43, 226, 0.6);
+    }
+
+    .btn-learn {
+      padding: 14px 36px;
+      border: 2px solid rgba(138, 43, 226, 0.5);
+      border-radius: 999px;
+      background: transparent;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-learn:hover {
+      border-color: #ff2d78;
+      box-shadow: 0 0 20px rgba(255, 45, 120, 0.25);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 56px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+      animation-delay: 7s;
+    }
+
+    .stat-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: #7070a0;
+      margin-top: 2px;
+    }
+
+    /* ── Glass Modal ────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .glass-box {
+      position: relative;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(138, 43, 226, 0.1);
+      padding: 44px 40px 36px;
+      border-radius: 24px;
+      width: 440px;
+      max-width: 95vw;
+      animation: modalIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.88) translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #fff;
+      opacity: 0.5;
+      transition: 0.2s;
+      background: none;
+      border: none;
+    }
+
+    .close-btn:hover {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .info-btn {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(138, 43, 226, 0.2);
+      border: 1px solid rgba(138, 43, 226, 0.4);
+      color: #a855f7;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+
+    .info-btn:hover {
+      background: rgba(138, 43, 226, 0.4);
+    }
+
+    .info-tooltip {
+      position: absolute;
+      top: 48px;
+      left: 20px;
+      background: rgba(15, 15, 25, 0.95);
+      border: 1px solid rgba(138, 43, 226, 0.3);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      color: #c0c0d0;
+      width: 220px;
+      z-index: 10;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .info-btn:hover+.info-tooltip,
+    .info-tooltip:hover {
+      display: block;
+    }
+
+    .modal-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    /* Tabs */
+    .form-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .form-tab {
+      flex: 1;
+      padding: 9px;
+      border-radius: 999px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #7070a0;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.25s;
+      border: none;
+      background: none;
+    }
+
+    .form-tab.active {
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      color: #fff;
+    }
+
+    .glass-input {
+      width: 100%;
+      padding: 13px 16px;
+      margin: 8px 0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      outline: none;
+      transition: 0.25s;
+    }
+
+    .glass-input:focus {
+      border-color: rgba(138, 43, 226, 0.6);
+      background: rgba(138, 43, 226, 0.06);
+      box-shadow: 0 0 12px rgba(138, 43, 226, 0.15);
+    }
+
+    .glass-input::placeholder {
+      color: #505070;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0 4px;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #9090b0;
+    }
+
+    .remember-row input {
+      accent-color: #8a2be2;
+      width: 15px;
+      height: 15px;
+    }
+
+    .forgot-link {
+      font-size: 0.82rem;
+      color: #a855f7;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .forgot-link:hover {
+      color: #ff2d78;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #8a2be2, #ff2d78);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(138, 43, 226, 0.5);
+    }
+
+    .divider-or {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.78rem;
+      color: #404060;
+      margin: 14px 0;
+    }
+
+    .divider-or::before,
+    .divider-or::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.25s;
+    }
+
+    .btn-google:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .g-icon {
+      background: #4285F4;
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .error-msg {
+      font-size: 0.8rem;
+      color: #ff6b6b;
+      margin-top: 4px;
+      display: none;
+      padding: 8px 12px;
+      background: rgba(255, 45, 45, 0.1);
+      border-radius: 8px;
+      border-left: 3px solid #ff2d78;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    /* ── Scroll-enabled after load ──────────── */
+    body.loaded {
+      overflow: auto;
+    }
+
+    /* ── Keyframes ──────────────────────────── */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes heroIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes navIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Mobile ─────────────────────────────── */
+    @media (max-width: 600px) {
+      .epic-text {
+        font-size: 2.6rem;
+      }
+
+      .glass-box {
+        padding: 36px 24px 28px;
+      }
+
+      .hero-stats {
+        gap: 20px;
+      }
+
+      nav {
+        padding: 16px 5%;
+      }
+
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- ══ LOADER ════════════════════════════════ -->
+  <div class="loader">
+    <div class="loader-logo">FanVerse</div>
+    <div class="loader-sub">Official Fan Store</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+
+  <!-- ══ NAV ═══════════════════════════════════ -->
+  <nav id="navbar">
+    <div class="nav-logo">✦ FanVerse</div>
+    <div class="nav-links-right">
+      <a href="fan-edition.html"
+        style="margin-right:20px; color:var(--pink-light); font-weight:700; text-decoration:none;">🔥 Fan Edition</a>
+      <a href="about.html" style="font-weight:600; text-decoration:none; margin-right:20px;">About</a>
+      <a href="help.html" style="font-weight:600; text-decoration:none;">Help</a>
+      <a href="#" onclick="openModal('login')">Login</a>
+      <a href="#" onclick="openModal('register')" class="btn-nav-login">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══════════════════════════════════ -->
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-content">
+      <div class="badge-hero">✨ Anime &amp; TFI Fan Merchandise</div>
+      <h1 class="epic-text">
+        <span class="word w1">Wear</span>&nbsp;
+        <span class="word w2">Your</span>&nbsp;
+        <span class="word w1">Fandom</span>
+      </h1>
+      <div class="divider"></div>
+      <p class="tagline">Custom T-Shirts, Hoodies &amp; Pants with your favourite stickers.<br />Premium quality.
+        Affordable prices. Delivered to your door.</p>
+      <div class="hero-btns">
+        <button class="btn-enter" onclick="openModal('login')">🚀 Enter Store</button>
+        <button class="btn-learn" onclick="openModal('register')">Create Account</button>
+      </div>
+      <div class="hero-stats" id="hero-stats">
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Sticker Designs</div>
+        </div>
+        <div>
+          <div class="stat-num">10K+</div>
+          <div class="stat-label">Happy Fans</div>
+        </div>
+        <div>
+          <div class="stat-num">₹199</div>
+          <div class="stat-label">Starting Price</div>
+        </div>
+      </div>
+      <script>
+        if (localStorage.getItem('fanverseLoggedIn') === 'true') {
+          document.getElementById('hero-stats').style.display = 'none';
+        }
+      </script>
+    </div>
+  </section>
+
+  <!-- ══ AUTH MODAL ═════════════════════════════ -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="glass-box" id="glass-box">
+
+      <button class="info-btn" id="info-btn">ℹ</button>
+      <div class="info-tooltip">
+        🔐 Your account is stored securely in your browser. Sign up to access the FanVerse store, customize merch, and
+        place orders.
+      </div>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+
+      <div class="modal-logo">✦ FanVerse</div>
+
+      <!-- Tabs -->
+      <div class="form-tabs" style="margin-top:16px;">
+        <button class="form-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+        <button class="form-tab" id="tab-register" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Error message -->
+      <div class="error-msg" id="error-msg"></div>
+
+      <!-- Login Form -->
+      <form id="form-login" onsubmit="event.preventDefault(); doLogin();">
+        <input class="glass-input" type="text" id="login-user" placeholder="Username" autocomplete="username" />
+        <input class="glass-input" type="password" id="login-pass" placeholder="Password" autocomplete="current-password" />
+        <div class="row-between">
+          <label class="remember-row">
+            <input type="checkbox" id="remember-me" />
+            <span>Remember me</span>
+          </label>
+          <span class="forgot-link" onclick="forgotPassword()">Forgot password?</span>
+        </div>
+        <button type="submit" class="btn-submit">Login to Store</button>
+        <div class="divider-or">or</div>
+        <button class="btn-google" type="button">
+          <span class="g-icon">G</span> Continue with Google
+        </button>
+        <p style="text-align:center;margin-top:14px;font-size:0.8rem;color:#606080;">
+          No account? <span class="forgot-link" onclick="switchTab('register')">Register here</span>
+        </p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="form-register" style="display:none;" onsubmit="event.preventDefault(); doRegister();">
+        <div class="input-row">
+          <input class="glass-input" type="text" id="reg-fname" placeholder="First Name" autocomplete="given-name" />
+          <input class="glass-input" type="text" id="reg-lname" placeholder="Last Name" autocomplete="family-name" />
+        </div>
+        <input class="glass-input" type="text" id="reg-user" placeholder="Username" autocomplete="username" />
+        <input class="glass-input" type="email" id="reg-email" placeholder="Email" autocomplete="email" />
+        <input class="glass-input" type="password" id="reg-pass" placeholder="Password" autocomplete="new-password" />
+        <input class="glass-input" type="password" id="reg-pass2" placeholder="Confirm Password" autocomplete="new-password" />
+        <button type="submit" class="btn-submit">Create Account</button>
+        <div class="divider-or">or</div>
+        <button class="btn-google" type="button">
+          <span class="g-icon">G</span> Continue with Google
+        </button>
+        <p style="text-align:center;margin-top:14px;font-size:0.8rem;color:#606080;">
+          Already have account? <span class="forgot-link" onclick="switchTab('login')">Login</span>
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+
+
+  <script>
+    // ── Unlock scroll after load animations ────
+    setTimeout(() => {
+      document.body.style.overflow = 'auto';
+      document.body.classList.add('loaded');
+    }, 7500);
+
+    // ── Modal open/close ───────────────────────
+    function openModal(tab) {
+      document.getElementById('modal-overlay').classList.add('open');
+      switchTab(tab || 'login');
+
+      // Auto-fill previously remembered credentials
+      const stored = JSON.parse(localStorage.getItem('fanverseStoredCreds'));
+      if (stored) {
+        document.getElementById('login-user').value = stored.user;
+        document.getElementById('login-pass').value = stored.pass;
+        document.getElementById('remember-me').checked = true;
+      }
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      clearError();
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modal-overlay')) closeModal();
+    }
+
+    // ── Tab switch ─────────────────────────────
+    function switchTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('form-login').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('form-register').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('tab-login').classList.toggle('active', isLogin);
+      document.getElementById('tab-register').classList.toggle('active', !isLogin);
+      clearError();
+    }
+
+    // ── Error helper ───────────────────────────
+    function showError(msg) {
+      const el = document.getElementById('error-msg');
+      el.textContent = msg;
+      el.classList.add('show');
+    }
+    function clearError() {
+      document.getElementById('error-msg').classList.remove('show');
+    }
+
+    // ── Login ──────────────────────────────────
+    function doLogin() {
+      clearError();
+      const u = document.getElementById('login-user').value.trim();
+      const p = document.getElementById('login-pass').value.trim();
+      const remember = document.getElementById('remember-me').checked;
+      if (!u || !p) { showError('Please enter your username and password.'); return; }
+      const saved = JSON.parse(localStorage.getItem('fanverseUser') || 'null');
+      if (!saved) { showError('No account found. Please register first.'); return; }
+      if (saved.user !== u || saved.pass !== p) { showError('Invalid username or password.'); return; }
+
+      markLoggedIn(remember, saved.fname);
+    }
+
+    // ── Register ───────────────────────────────
+    function doRegister() {
+      clearError();
+      const fn = document.getElementById('reg-fname').value.trim();
+      const ln = document.getElementById('reg-lname').value.trim();
+      const u = document.getElementById('reg-user').value.trim();
+      const e = document.getElementById('reg-email').value.trim();
+      const p = document.getElementById('reg-pass').value.trim();
+      const p2 = document.getElementById('reg-pass2').value.trim();
+      if (!fn || !u || !e || !p) { showError('Please fill in all fields.'); return; }
+      if (p !== p2) { showError('Passwords do not match.'); return; }
+      if (p.length < 6) { showError('Password must be at least 6 characters.'); return; }
+      localStorage.setItem('fanverseUser', JSON.stringify({ fname: fn, lname: ln, user: u, email: e, pass: p }));
+      markLoggedIn(true, fn);
+    }
+
+    // ── Actual Google Auth (Firebase) ──────────
+    function googleLogin() {
+      // Handled directly via click listeners in module script below to prevent popup blockers
+    }
+
+    // ── Forgot password ────────────────────────
+    function forgotPassword() {
+      const saved = JSON.parse(localStorage.getItem('fanverseUser') || 'null');
+      if (!saved) { showError('No account found. Please register first.'); return; }
+      alert(`📧 Account found!\nUsername: ${saved.user}\nHint: Password is ${saved.pass.length} characters long.`);
+    }
+
+    // ── After successful auth ──────────────────
+    function markLoggedIn(remember, name) {
+      // Always save to localStorage so they don't have to login every time
+      localStorage.setItem('fanverseLoggedIn', 'true');
+
+      // Also ensure we have the credentials saved if they weren't already
+      const u = document.getElementById('login-user') ? document.getElementById('login-user').value.trim() : '';
+      const p = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
+      if (u && p) {
+        localStorage.setItem('fanverseStoredCreds', JSON.stringify({ user: u, pass: p }));
+      }
+
+      // Ask geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => localStorage.setItem('fanverseLocation', JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude })),
+          () => { }
+        );
+      }
+      // Animate → redirect
+      const box = document.getElementById('glass-box');
+      if (box) {
+        box.style.animation = 'none';
+        box.style.transform = 'scale(0.9)';
+        box.style.opacity = '0';
+        box.style.transition = '0.4s ease';
+      }
+      setTimeout(() => { window.location.href = 'products.html'; }, 420);
+    }
+
+    // ── Keyboard shortcut ──────────────────────
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Enter') {
+        const overlay = document.getElementById('modal-overlay');
+        if (overlay.classList.contains('open')) {
+          const isLogin = document.getElementById('form-login').style.display !== 'none';
+          if (isLogin) doLogin(); else doRegister();
+        }
+      }
+    });
+
+    // ── Finish Real Google Login Flow ──────────
+    function finishRealGoogleLogin(email, fname, token) {
+      localStorage.setItem('fanverseUser', JSON.stringify({ fname: fname, lname: '', user: fname, email: email, pass: 'firebase-auth-token', token: token }));
+      localStorage.setItem('fanverseStoredCreds', JSON.stringify({ user: fname, pass: 'firebase-auth-token' }));
+      markLoggedIn(true, fname);
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+    // Initialize Firebase (Replace with your actual project config later if needed, but this works for demo test)
+    // NOTE: You must provide your own real Firebase config block here to authorize domains and fully complete it.
+    // For now, this invokes the real Google Identity services popup flow.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDz5qFi9Zubd3UNqwuIownQXWgC2adbDbI",
+      authDomain: "fanverse-deb8e.firebaseapp.com",
+      projectId: "fanverse-deb8e",
+      storageBucket: "fanverse-deb8e.firebasestorage.app",
+      messagingSenderId: "579296683474",
+      appId: "1:579296683474:web:7b5dd5a0bc78083666940b",
+      measurementId: "G-VRDF6RCFJ6"
+    };
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+
+      document.querySelectorAll('.btn-google').forEach(btn => {
+        btn.addEventListener('click', () => {
+          signInWithPopup(auth, provider).then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const user = result.user;
+
+            window.finishRealGoogleLogin(user.email, user.displayName || user.email.split('@')[0], token);
+          }).catch((error) => {
+            console.error("Firebase Login Error:", error.code, error.message);
+            let extraMsg = '';
+            if (error.code === 'auth/unauthorized-domain') {
+                extraMsg = '\n\nFix: Ensure you are accessing the site via http://localhost:8081 and NOT http://127.0.0.1:8081. Also check if your domain is authorized in the Firebase Console.';
+            } else if (error.code === 'auth/popup-closed-by-user') {
+                extraMsg = '\n\nPopup was closed before completing the login.';
+            }
+            alert("Error logging in with Google: " + error.message + extraMsg);
+          });
+        });
+      });
+    } catch (err) {
+      console.error("Firebase initialization failed. Need real keys.", err);
+    }
+  </script>
+
+</body>
+
+
+</html>

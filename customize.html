@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design Studio — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&family=Impact&family=Arial+Black&family=Comic+Neue:wght@700&family=Bangers&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .studio-header {
+            padding: calc(var(--nav-h)+16px) 0 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .studio-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .studio-wrap {
+            max-width: 1280px;
+            margin: 24px auto;
+            padding: 0 24px 80px;
+        }
+
+        .studio-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 280px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media(max-width:1100px) {
+            .studio-grid {
+                grid-template-columns: 260px 1fr 240px;
+            }
+        }
+
+        @media(max-width:900px) {
+            .studio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-center {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .view-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .view-tab {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--radius-pill);
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .view-tab.active {
+            background: rgba(255, 45, 120, 0.15);
+            border-color: var(--pink);
+            color: var(--pink-light);
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(138, 43, 226, 0.35);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--purple);
+            background: rgba(138, 43, 226, 0.05);
+        }
+
+        .price-mrp-strike {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-bottom: 2px;
+        }
+
+        .combo-tag {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html" class="active">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="cart.html" class="cart-btn">🛒 Cart<span class="cart-badge" style="display:none">0</span></a>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <div class="studio-header">
+        <div class="studio-inner">
+            <div>
+                <div class="breadcrumb"><a href="products.html">Shop</a>›<span>Design Studio</span></div>
+                <h1 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:700;margin-top:4px;">🎨 Custom
+                    Design Studio</h1>
+            </div>
+            <span class="badge badge-purple">Live Canvas Preview</span>
+        </div>
+    </div>
+
+    <div class="studio-wrap">
+        <div class="studio-grid">
+
+            <!-- LEFT PANEL -->
+            <div class="panel">
+                <div class="panel-title">⚙️ Options</div>
+
+                <div class="option-label">Product Type</div>
+                <div class="product-tabs">
+                    <button class="prod-tab active" data-product="tshirt">👕 T-Shirt</button>
+                    <button class="prod-tab" data-product="hoodie">🧥 Hoodie</button>
+                    <button class="prod-tab" data-product="sweatshirt">🧶 Sweat</button>
+                    <button class="prod-tab" data-product="polo">👔 Polo</button>
+                    <button class="prod-tab" data-product="shirt">👔 Shirt</button>
+                </div>
+
+                <div class="option-label">Color</div>
+                <div id="color-swatches" class="color-swatches"></div>
+
+                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                    <div class="option-label" style="margin:0;">Size</div>
+                    <button
+                        style="background:transparent; border:none; color:var(--purple-light); font-size:0.8rem; cursor:pointer; text-decoration:underline;"
+                        onclick="openSizeChart()">📐 Size Guide</button>
+                </div>
+                <div class="size-pills" style="margin-top:10px;">
+                    <button class="size-pill" data-size="XS">XS</button>
+                    <button class="size-pill" data-size="S">S</button>
+                    <button class="size-pill active" data-size="M">M</button>
+                    <button class="size-pill" data-size="L">L</button>
+                    <button class="size-pill" data-size="XL">XL</button>
+                    <button class="size-pill" data-size="2XL">2XL</button>
+                    <button class="size-pill" data-size="3XL">3XL</button>
+                </div>
+
+                <div class="option-label">Sticker Tab</div>
+                <div class="sticker-tabs">
+                    <button class="sticker-tab active" data-tab="anime" onclick="renderStickerPanel('anime')">🎌
+                        Anime</button>
+                    <button class="sticker-tab" data-tab="tfi" onclick="renderStickerPanel('tfi')">🎬 TFI</button>
+                </div>
+                <div id="sticker-grid" class="sticker-grid-small"></div>
+
+                <!-- Upload custom image -->
+                <div class="option-label" style="margin-top:16px;">Upload Your Own</div>
+                <label class="upload-zone" for="custom-upload">
+                    📁 Click to upload any image as sticker
+                    <input type="file" id="custom-upload" accept="image/*" style="display:none;"
+                        onchange="handleUpload(event)" />
+                </label>
+
+                <!-- Custom text -->
+                <div class="option-label" style="margin-top:16px;">Add Custom Text (+₹200)</div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                    <input type="text" id="custom-text-input" class="glass-input" placeholder="Enter text..."
+                        style="flex:1;padding:8px;font-size:0.8rem; height: 36px; margin: 0;" />
+                    <select id="custom-text-font"
+                        style="width:100px; height:36px; border:none; border-radius:4px; padding:0 8px; background:rgba(255,255,255,0.06); color:#fff;">
+                        <option value="Impact" style="color:#000;">Impact</option>
+                        <option value="Arial Black" style="color:#000;">Arial Black</option>
+                        <option value="Comic Neue" style="color:#000;">Comic Neue</option>
+                        <option value="Bangers" style="color:#000;">Bangers</option>
+                    </select>
+                    <input type="color" id="custom-text-color" value="#ffffff"
+                        style="width:36px;height:36px;border:none;border-radius:4px;cursor:pointer;padding:0;"
+                        title="Text Color" />
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="addCustomText()" style="width:100%;margin-top:8px;">➕
+                    Add Text</button>
+
+                <div class="option-label" style="margin-top:16px;">Sticker Size — <span
+                        id="sticker-size-val">120px</span></div>
+                <input type="range" class="size-slider" id="sticker-size" min="40" max="280" value="120" />
+
+                <div class="option-label" style="margin-top:12px;">Rotation — <span id="sticker-rot-val">0°</span></div>
+                <input type="range" class="size-slider" id="sticker-rot" min="-180" max="180" value="0" />
+
+                <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">💡 Tip: Drag corner handles on
+                    canvas to resize. To delete, simply click "Delete".</div>
+            </div>
+
+            <!-- CENTER: Canvas -->
+            <div class="canvas-center">
+                <!-- Front/Back tabs -->
+                <div class="view-tabs">
+                    <button class="view-tab active" data-view="front">⬆️ Front View</button>
+                    <button class="view-tab" data-view="back">⬇️ Back View</button>
+                </div>
+                <div class="canvas-wrap">
+                    <canvas id="preview-canvas" width="500" height="660" style="max-height:68vh;"></canvas>
+                    <div class="canvas-hint">Click sticker → drag to move · Drag corners to resize</div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="btn btn-ghost btn-sm" onclick="clearSticker()"
+                        style="color:#ef4444;border-color:rgba(239,68,68,0.2);">🗑️ Delete</button>
+                    <button class="btn btn-ghost btn-sm" onclick="removeStickerBG()"
+                        style="color:#10b981;border-color:rgba(16,185,129,0.2);">✨ Remove BG</button>
+                    <button class="btn btn-ghost btn-sm" onclick="flipActiveItem()"
+                        style="color:#3b82f6;border-color:rgba(59,130,246,0.2);">↔️ Flip</button>
+                    <span style="font-size:0.75rem;color:var(--text-muted);align-self:center;">Switch Front/Back to add
+                        stickers to both sides</span>
+                </div>
+            </div>
+
+            <!-- RIGHT: Summary -->
+            <div class="panel">
+                <div class="panel-title">🛒 Order Summary</div>
+                <div class="summary-item"><span>Product</span><span id="sum-product">T-Shirt</span></div>
+                <div class="summary-item"><span>Color</span><span id="sum-color">#111</span></div>
+                <div class="summary-item"><span>Size</span><span id="sum-size">M</span></div>
+                <div class="summary-item"><span>Front Sticker</span><span id="sum-front">None</span></div>
+                <div class="summary-item"><span>Back Sticker</span><span id="sum-back">None</span></div>
+
+                <div style="text-align:center;margin:16px 0;">
+                    <div class="price-mrp-strike" id="sum-mrp" style="display:none;">₹2,500</div>
+                    <div class="price-total" id="sum-price" style="margin:4px 0;">₹700</div>
+                    <span class="combo-tag" id="combo-label" style="display:none;">🔥 COMBO: Front + Back Deal!</span>
+                </div>
+
+                <button class="btn btn-primary" style="width:100%;justify-content:center;" id="add-to-cart-btn">
+                    🛒 Add to Cart
+                </button>
+                <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:10px; border-color:var(--pink-light); color:var(--pink-light);" onclick="submitToCommunity()">
+                    🏆 Submit to Community
+                </button>
+                <a href="cart.html" class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:10px;">
+                    View Cart →
+                </a>
+                <div
+                    style="margin-top:18px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius-md);font-size:0.76rem;color:var(--text-muted);line-height:1.8;">
+                    ✅ Free shipping above ₹999<br />
+                    🎨 Front + Back combo = ~~₹2500~~ <strong style="color:var(--text-primary);">₹2000</strong><br />
+                    🔒 Secure checkout
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Chart Modal -->
+    <div id="size-modal" class="modal-overlay"
+        style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); z-index:9999; justify-content:center; align-items:center;">
+        <div class="modal-content"
+            style="background:#111; border:1px solid #333; border-radius:12px; padding:30px; max-width:600px; width:90%; position:relative; box-shadow:0 10px 40px rgba(138,43,226,0.3);">
+            <button onclick="document.getElementById('size-modal').style.display='none'"
+                style="position:absolute; top:15px; right:15px; background:transparent; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+            <h2 id="modal-title"
+                style="font-family:'Outfit',sans-serif; margin-bottom:20px; color:var(--purple-light);">Size Guide</h2>
+            <div id="modal-body" style="color:var(--text-muted); line-height:1.6;"></div>
+        </div>
+    </div>
+
+    <div class="toast-container"></div>
+    <script src="js/main.js"></script>
+    <script src="js/customize.js"></script>
+    <script>
+        function submitToCommunity() {
+            if(typeof showToast === 'function') {
+                showToast('Your design has been submitted to the Hall of Fame for review!');
+            } else {
+                alert('Your design has been submitted to the Hall of Fame for review!');
+            }
+        }
+
+        // Show combo label when both sides filled
+        const origUpdate = window.updateSummary;
+        setInterval(() => {
+            const f = viewState?.front?.sticker, b = viewState?.back?.sticker;
+            const cl = document.getElementById('combo-label');
+            if (cl) cl.style.display = (f && b) ? 'inline' : 'none';
+        }, 300);
+
+        function openSizeChart() {
+            const cat = globalState.product; // 'tshirt', 'hoodie', 'pants'
+            const modal = document.getElementById('size-modal');
+            const title = document.getElementById('modal-title');
+            const body = document.getElementById('modal-body');
+
+            modal.style.display = 'flex';
+
+            if (cat === 'pants') {
+                title.textContent = "Pant Size Guide";
+                body.innerHTML = `
+                    <p style="margin-bottom:15px;">Please refer to the chart below to find your perfect fit.</p>
+                    <div style="background:#fff; padding:10px; border-radius:8px;">
+                        <img src="img/Pant Size Chart.png" style="width:100%; height:auto;" alt="Pant Size Chart">
+                    </div>
+                `;
+            } else {
+                title.textContent = (cat === 'hoodie' ? "Hoodie" : "T-Shirt") + " Size Guide";
+                body.innerHTML = `
+                    <p style="margin-bottom:15px;">Measurements are in inches. Standard fit.</p>
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <tr style="border-bottom:1px solid #333;"><th style="padding:10px 0; color:#fff;">Size</th><th style="padding:10px 0; color:#fff;">Chest</th><th style="padding:10px 0; color:#fff;">Length</th></tr>
+                        <tr style="border-bottom:1px solid #222;"><td style="padding:10px 0;">S</td><td>38"</td><td>27"</td></tr>
+                        <tr style="border-bottom:1px solid #222;"><td style="padding:10px 0;">M</td><td>40"</td><td>28"</td></tr>
+                        <tr style="border-bottom:1px solid #222;"><td style="padding:10px 0;">L</td><td>42"</td><td>29"</td></tr>
+                        <tr style="border-bottom:1px solid #222;"><td style="padding:10px 0;">XL</td><td>44"</td><td>30"</td></tr>
+                        <tr style="border-bottom:1px solid #222;"><td style="padding:10px 0;">2XL</td><td>46"</td><td>31"</td></tr>
+                    </table>
+                `;
+            }
+        }
+    </script>
+</body>
+
+</html>

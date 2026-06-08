@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Great Rainbow Deal — FanVerse</title>
+    <meta name="description" content="FanVerse exclusive weekly Rainbow Deals." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/auth.js"></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/main.js" defer></script>
+    <style>
+        .rainbow-title {
+            background: -webkit-linear-gradient(left, #8b5cf6, #4f46e5, #3b82f6, #10b981, #eab308, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .vibgyor-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto 40px;
+            max-width: 500px;
+            text-align: left;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vibgyor-list li {
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .deal-card {
+            background: rgba(30, 30, 40, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            width: 320px;
+            transition: transform 0.3s ease;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .deal-img-wrap {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .deal-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ══ MAIN NAVIGATION ════════════════════════════════ -->
+    <nav class="navbar" id="main-nav">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="cart.html" class="cart-btn" id="cart-btn">
+                    🛒 Cart<span class="cart-badge" id="cart-badge" style="display:none">0</span>
+                </a>
+                <button class="btn btn-ghost btn-sm" onclick="logout()" style="font-size:0.8rem;">Logout</button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <!-- Main Content -->
+    <section class="section-pad" style="margin-top: 80px; text-align: center;">
+        <div class="container" style="max-width: 1000px;">
+            <h1 class="rainbow-title">The Great Rainbow Deal</h1>
+            <p id="deal-desc"
+                style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 40px; line-height: 1.6;">
+                Every day brings a new color! Get an exclusive discount on matching items.<br>
+                Use promo code <strong style="color: #22c55e; font-size: 1.4rem;">FAN10</strong> at checkout!
+            </p>
+            <ul class="vibgyor-list" id="vibgyor-list">
+                <!-- Dynamically injected -->
+            </ul>
+            <h2 style="font-size: 2rem; font-family: 'Outfit', sans-serif; font-weight: 800; margin-bottom: 20px;">
+                Today's Deals</h2>
+            <div id="today-deals-container"
+                style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px;">
+                <!-- Dynamically injected items -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top:none;padding-top:0;">
+                <p>© 2026 FanVerse. Student project for educational purposes.</p>
+            </div>
+        </div>
+    </footer>
+    <div class="toast-container"></div>
+    <script>
+        const daysSchedule = [
+            { day: 0, name: "Sunday", colorName: "Red & White", primaryHex: "#ef4444", secondaryHex: "#ffffff" },
+            { day: 1, name: "Monday", colorName: "Violet", primaryHex: "#8b5cf6" },
+            { day: 2, name: "Tuesday", colorName: "Indigo", primaryHex: "#4f46e5" },
+            { day: 3, name: "Wednesday", colorName: "Blue", primaryHex: "#3b82f6" },
+            { day: 4, name: "Thursday", colorName: "Green", primaryHex: "#10b981" },
+            { day: 5, name: "Friday", colorName: "Yellow", primaryHex: "#eab308" },
+            { day: 6, name: "Saturday", colorName: "Orange & Black", primaryHex: "#f97316", secondaryHex: "#000000" }
+        ];
+
+        // VIBGYOR mapping logic purely for the list
+        const vibgyor = [
+            { letter: 'V', full: 'Violet', dayId: 1, hex: '#8b5cf6', fg: '#fff' },
+            { letter: 'I', full: 'Indigo', dayId: 2, hex: '#4f46e5', fg: '#fff' },
+            { letter: 'B', full: 'Blue', dayId: 3, hex: '#3b82f6', fg: '#fff' },
+            { letter: 'G', full: 'Green', dayId: 4, hex: '#10b981', fg: '#fff' },
+            { letter: 'Y', full: 'Yellow', dayId: 5, hex: '#eab308', fg: '#000' },
+            { letter: 'O', full: 'Orange', dayId: 6, sub: '+ Black', hex: '#f97316', fg: '#fff' },
+            { letter: 'R', full: 'Red', dayId: 0, sub: '+ White', hex: '#ef4444', fg: '#fff' }
+        ];
+
+        function getFilter(hex) {
+            let r = parseInt(hex.slice(1, 3), 16) / 255;
+            let g = parseInt(hex.slice(3, 5), 16) / 255;
+            let b = parseInt(hex.slice(5, 7), 16) / 255;
+            let max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) h = s = 0;
+            else {
+                let d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+
+            const targetH = h * 360;
+            const targetS = s;
+            const targetL = l;
+
+            const hueRotate = targetH - 230;
+
+            if (targetS < 0.1 && targetL < 0.2) return 'grayscale(100%) brightness(30%)';
+            if (targetS < 0.1 && targetL > 0.8) return 'grayscale(100%) brightness(350%)';
+
+            return `hue-rotate(${hueRotate}deg) saturate(${Math.min(targetS * 200 + 100, 300)}%) brightness(${targetL > 0.5 ? 120 : 80}%)`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentDay = new Date().getDay();
+            const listEl = document.getElementById('vibgyor-list');
+            const dealsEl = document.getElementById('today-deals-container');
+            const descEl = document.getElementById('deal-desc');
+
+            // 1. Render VIBGYOR list
+            let listHTML = '';
+            vibgyor.forEach(item => {
+                const isToday = item.dayId === currentDay;
+                const bgStyle = isToday ? `background:${item.hex};color:${item.fg};transform:scale(1.05);box-shadow:0 10px 20px rgba(0,0,0,0.5);border:2px solid white;` : `color:${item.hex};`;
+                const labelOpacity = isToday ? '1' : '0.6';
+
+                listHTML += `
+                    <li style="${bgStyle}">
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <span style="font-size:1.8rem; font-weight:900;">${item.letter}</span>
+                            <div style="display:flex; flex-direction:column; line-height:1.2;">
+                                <span style="font-size:1.3rem;">${item.full}</span>
+                                ${item.sub ? `<span style="font-size:0.8rem; opacity:0.8;">${item.sub}</span>` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            <span style="opacity: ${labelOpacity}; font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; background:rgba(0,0,0,0.2); padding:4px 10px; border-radius:12px;">
+                                ${daysSchedule[item.dayId].name}
+                            </span>
+                        </div>
+                    </li>
+                `;
+            });
+            listEl.innerHTML = listHTML;
+
+            const now = new Date();
+            const isFirstWeek = now.getDate() <= 7 || (now.getDate() === 30 && now.getMonth() === 2);
+            const discountPct = 10;
+            const discText = `-${discountPct}% w/ FAN10`;
+
+            if (!isFirstWeek) {
+                if (descEl) descEl.innerHTML = `The Great Rainbow Deal is currently <strong>OFF AIR</strong>. <br> Expect it back during the <strong>first week of next month!</strong>`;
+                if (dealsEl) dealsEl.innerHTML = `<div style="padding:40px; background:rgba(255,255,255,0.05); border-radius:15px; border:1px dashed rgba(255,255,255,0.2); width:100%;">
+                    <h3 style="color:var(--text-muted);">No deals active today.</h3>
+                    <p style="font-size:0.9rem;">Check back during the first week of the month for exclusive 10% discounts!</p>
+                </div>`;
+                return; // Stop rendering deals if not first week
+            }
+
+            if (descEl) {
+                descEl.innerHTML = `Every day brings a new color! Get an exclusive <strong>10% OFF</strong> on matching items (1st Week Special).<br>Use promo code <strong style="color: #22c55e; font-size: 1.4rem;">FAN10</strong> at checkout!`;
+            }
+
+            const tshirtPrice = 749;
+            const hoodiePrice = 1199;
+            const mrpTsh = 1450;
+            const mrpHood = 1800;
+
+            const todaySchedule = daysSchedule[currentDay];
+            const colorsToRender = [
+                { name: todaySchedule.colorName.includes('&') ? todaySchedule.colorName.split('&')[0].trim() : todaySchedule.colorName, hex: todaySchedule.primaryHex }
+            ];
+
+            if (todaySchedule.secondaryHex) {
+                colorsToRender.push({
+                    name: todaySchedule.colorName.split('&')[1].trim(),
+                    hex: todaySchedule.secondaryHex
+                });
+            }
+
+            let dealsHTML = '';
+            colorsToRender.forEach(c => {
+                const imgFilter = getFilter(c.hex);
+                const bgWrap = (c.hex === '#ffffff') ? '#e0e0e0' : ((c.hex === '#000000') ? '#333' : '#fff');
+
+                // T-Shirt
+                dealsHTML += `
+                <div class="deal-card">
+                    <div class="deal-img-wrap" style="background:${bgWrap};">
+                        <img src="img/base_tshirt.png" class="deal-img" style="filter: ${imgFilter}; position:relative; z-index:1;" onerror="this.src='img/fan_shirt.png'">
+                    </div>
+                    <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:8px;">${c.name} T-Shirt</h3>
+                    <div style="font-size:1.2rem; margin-bottom:15px; display:flex; gap:10px; justify-content:center; align-items:center;">
+                        <span style="color:var(--text-muted); text-decoration:line-through; font-size:0.9rem;">₹${mrpTsh}</span>
+                        <span style="font-weight:700;">₹${tshirtPrice}</span>
+                        <span style="color:#22c55e; font-size:0.8rem; background:rgba(34,197,94,0.1); padding:2px 6px; border-radius:4px;">${discText}</span>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="addDealToCart('${c.name} T-Shirt', ${tshirtPrice}, 'img/base_tshirt.png', '${c.hex}')">🛒 Add to Cart</button>
+                </div>
+                `;
+
+                // Hoodie
+                dealsHTML += `
+                <div class="deal-card">
+                    <div class="deal-img-wrap" style="background:${bgWrap};">
+                        <img src="img/base_hoodie.png" class="deal-img" style="filter: ${imgFilter}; position:relative; z-index:1;" onerror="this.src='img/fan_shirt.png'">
+                    </div>
+                    <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:8px;">${c.name} Hoodie</h3>
+                    <div style="font-size:1.2rem; margin-bottom:15px; display:flex; gap:10px; justify-content:center; align-items:center;">
+                        <span style="color:var(--text-muted); text-decoration:line-through; font-size:0.9rem;">₹${mrpHood}</span>
+                        <span style="font-weight:700;">₹${hoodiePrice}</span>
+                        <span style="color:#22c55e; font-size:0.8rem; background:rgba(34,197,94,0.1); padding:2px 6px; border-radius:4px;">${discText}</span>
+                    </div>
+                    <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="addDealToCart('${c.name} Hoodie', ${hoodiePrice}, 'img/base_hoodie.png', '${c.hex}')">🛒 Add to Cart</button>
+                </div>
+                `;
+            });
+
+            dealsEl.innerHTML = dealsHTML;
+        });
+
+        function addDealToCart(name, price, imgPath, hexColor) {
+            let cart = JSON.parse(localStorage.getItem('fanverse_cart') || '[]');
+            const randId = Math.floor(Math.random() * 10000) + 5000;
+            const colorName = name.split(' ')[0];
+            const customState = {
+                global: { product: name.includes('Hoodie') ? 'hoodie' : 'tshirt', color: hexColor, size: 'M' }
+            };
+            const newItem = {
+                id: randId,
+                name: name,
+                price: price,
+                img: imgPath,
+                qty: 1,
+                meta: 'M · ' + colorName + ' · 100% Cotton',
+                customState: customState,
+                isRainbowDeal: true,
+                rainbowColorName: colorName
+            };
+            cart.push(newItem);
+            localStorage.setItem('fanverse_cart', JSON.stringify(cart));
+
+            if (window.updateCartBadge) updateCartBadge();
+            if (window.showToast) showToast('Deal item added to cart! Use FAN10');
+        }
+    </script>
+</body>
+
+</html>

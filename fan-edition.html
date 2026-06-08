@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fan Edition — FanVerse</title>
+    <meta name="description" content="FanVerse FanEdition exclusive merchandise." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/data.js" defer></script>
+    <script src="js/main.js" defer></script>
+</head>
+
+<body>
+    <!-- ══ NAV ═══════════════════════════════════ -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" class="active" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="fan-edition.html" style="color:var(--pink-light);margin-right:20px;font-weight:700;">🔥 Fan
+                    Edition</a>
+                <a href="cart.html" class="cart-btn" id="cart-btn">🛒 Cart<span class="cart-badge" id="cart-badge"
+                        style="display:none">0</span></a>
+                <button class="btn btn-ghost btn-sm" onclick="logout()" style="font-size:0.8rem;">Logout</button>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="products.html">🛍️ Shop</a>
+        <a href="customize.html">🎨 Customize</a>
+        <a href="cart.html">🛒 Cart</a>
+        <a href="community.html">🌟 Community</a>
+        <a href="fan-edition.html">🔥 Fan Edition</a>
+        <a href="rainbow-deal.html" style="color:#eab308; font-weight:800;">🌈 Deal</a>
+        <a href="help.html">❓ Help</a>
+    </div>
+
+    <!-- Fan Edition Zone -->
+    <section class="section-pad" style="margin-top: 80px; text-align: center;">
+        <div class="container" style="max-width: 900px;">
+            <h1 class="heading-lg"
+                style="margin-bottom: 20px; background: linear-gradient(135deg, #a855f7, #ff2d78); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                Unveiling the Logo</h1>
+
+            <div style="display: flex; justify-content: center; margin-bottom: 50px;">
+                <img src="img/fan_logo.png" alt="FanVerse FanEdition Logo"
+                    style="max-width: 550px; width: 100%; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.7);">
+            </div>
+
+            <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 50px; color: currentcolor;">FanVerse
+                FanEdition exclusively only in May and December</p>
+
+            <h3 class="heading-md" style="margin-bottom: 30px; color: currentcolor;">More products soon</h3>
+
+            <!-- Product Preview Cards -->
+            <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px;">
+
+                <!-- Fan Edition Shirt -->
+                <div class="product-card"
+                    style="width: 450px; background: rgba(30,30,40,0.85); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 30px; position: relative; transition: transform 0.3s ease;">
+                    <div
+                        style="width: 100%; height: 500px; background: #fff; border-radius: 20px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                        <!-- Solid color layer shaped like the shirt -->
+                        <div id="shirt-color-base"
+                            style="position: absolute; width: 95%; height: 95%; background: #ffffff; mask: url(img/fan_shirt.png) center center / contain no-repeat; -webkit-mask: url(img/fan_shirt.png) center center / contain no-repeat;">
+                        </div>
+                        <!-- Texture/Shadow layer -->
+                        <img src="img/fan_shirt.png"
+                            style="width: 95%; height: 95%; object-fit: contain; pointer-events: none; mix-blend-mode: multiply; opacity: 0.9; position: relative; z-index: 1;">
+                    </div>
+
+                    <h4 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; color: #fff;">FanEdition Shirt
+                    </h4>
+                    <p style="font-size: 0.9rem; color: #a855f7; font-weight: 600; margin-bottom: 12px;">Prices
+                        revealing soon</p>
+                    <div class="tag"
+                        style="background: rgba(255,45,120,0.2); color: #ff2d78; border: 1px solid rgba(255,45,120,0.4); display: inline-block; padding: 6px 12px; font-size: 0.8rem;">
+                        Launching on May 1st</div>
+                </div>
+
+                <!-- Fan Edition Sneakers -->
+                <div class="product-card"
+                    style="width: 450px; background: rgba(30,30,40,0.85); border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding: 30px; position: relative; transition: transform 0.3s ease;">
+                    <div
+                        style="width: 100%; height: 500px; background: #fff; border-radius: 20px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                        <img src="img/fan_shoes.png" style="max-width: 95%; max-height: 95%; object-fit: contain;">
+                    </div>
+
+                    <h4 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; color: #fff;">FanEdition
+                        Sneakers</h4>
+                    <p style="font-size: 1.1rem; color: #a855f7; font-weight: 700; margin-bottom: 18px;">Prices
+                        revealing soon</p>
+                    <div class="tag"
+                        style="background: rgba(255,45,120,0.25); color: #ff2d78; border: 1px solid rgba(255,45,120,0.5); display: inline-block; padding: 10px 20px; font-size: 1rem; border-radius: 10px; font-weight: 600;">
+                        Launching on May 1st</div>
+                </div>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div id="fan-countdown"
+                style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-family: 'Outfit', sans-serif;">
+                <div
+                    style="background: rgba(0,0,0,0.5); padding: 20px 35px; border-radius: 16px; border: 1px solid rgba(138,43,226,0.4); box-shadow: inset 0 0 20px rgba(138,43,226,0.1);">
+                    <span id="cd-months" style="font-size: 4rem; font-weight: 900; color: #a855f7;">00</span><br>
+                    <span
+                        style="font-size: 1rem; text-transform: uppercase; color: #bbb; letter-spacing: 2px;">Months</span>
+                </div>
+                <div
+                    style="background: rgba(0,0,0,0.5); padding: 20px 35px; border-radius: 16px; border: 1px solid rgba(138,43,226,0.4); box-shadow: inset 0 0 20px rgba(138,43,226,0.1);">
+                    <span id="cd-days" style="font-size: 4rem; font-weight: 900; color: #a855f7;">00</span><br>
+                    <span
+                        style="font-size: 1rem; text-transform: uppercase; color: #bbb; letter-spacing: 2px;">Days</span>
+                </div>
+                <div
+                    style="background: rgba(0,0,0,0.5); padding: 20px 35px; border-radius: 16px; border: 1px solid rgba(255,45,120,0.4); box-shadow: inset 0 0 20px rgba(255,45,120,0.1);">
+                    <span id="cd-hours" style="font-size: 4rem; font-weight: 900; color: #ff2d78;">00</span><br>
+                    <span
+                        style="font-size: 1rem; text-transform: uppercase; color: #bbb; letter-spacing: 2px;">Hours</span>
+                </div>
+                <div
+                    style="background: rgba(0,0,0,0.5); padding: 20px 35px; border-radius: 16px; border: 1px solid rgba(255,45,120,0.4); box-shadow: inset 0 0 20px rgba(255,45,120,0.1);">
+                    <span id="cd-minutes" style="font-size: 4rem; font-weight: 900; color: #ff2d78;">00</span><br>
+                    <span
+                        style="font-size: 1rem; text-transform: uppercase; color: #bbb; letter-spacing: 2px;">Mins</span>
+                </div>
+                <div
+                    style="background: rgba(0,0,0,0.5); padding: 20px 35px; border-radius: 16px; border: 1px solid rgba(255,45,120,0.4); box-shadow: inset 0 0 20px rgba(255,45,120,0.1);">
+                    <span id="cd-seconds" style="font-size: 4rem; font-weight: 900; color: #ff2d78;">00</span><br>
+                    <span
+                        style="font-size: 1rem; text-transform: uppercase; color: #bbb; letter-spacing: 2px;">Secs</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Use identical logic as customize.js for coloring the T-Shirt
+        function updateCountdown() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let target = new Date(currentYear, 4, 1); // target month: May (index 4) = May 1st
+
+            // If we've passed May 1st, aim for December 1st
+            if (now > target) {
+                target = new Date(currentYear, 11, 1);
+                // If passed Dec 1st, aim for next year May 1st
+                if (now > target) target = new Date(currentYear + 1, 4, 1);
+            }
+
+            const diff = target - now;
+            if (diff <= 0) return;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            const m = Math.floor(days / 30);
+            const d = days % 30;
+
+            const el = id => document.getElementById(id);
+            if (el('cd-months')) {
+                el('cd-months').innerText = m.toString().padStart(2, '0');
+                el('cd-days').innerText = d.toString().padStart(2, '0');
+                el('cd-hours').innerText = hours.toString().padStart(2, '0');
+                el('cd-minutes').innerText = minutes.toString().padStart(2, '0');
+                el('cd-seconds').innerText = seconds.toString().padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+
+</html>

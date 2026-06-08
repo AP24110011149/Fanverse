@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Status — FanVerse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .tracker-section {
+            padding: 80px 0;
+            min-height: 60vh;
+        }
+
+        .tracker-card {
+            background: rgba(30, 30, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .tracker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tracking-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            position: relative;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .tracking-step.active .step-icon {
+            background: var(--purple);
+            border-color: var(--purple-light);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+        }
+
+        .tracking-step.completed .step-icon {
+            background: #22c55e;
+            border-color: #4ade80;
+            color: #fff;
+        }
+
+        /* The vertical line connecting steps */
+        .step-line {
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            bottom: -20px;
+            width: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .tracking-step.completed .step-line {
+            background: #22c55e;
+        }
+
+        /* Hide line for last step */
+        .tracking-step:last-child .step-line {
+            display: none;
+        }
+
+        .step-content {
+            flex: 1;
+            padding-top: 8px;
+            padding-bottom: 20px;
+        }
+
+        .step-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .tracking-step.active .step-title {
+            color: #fff;
+            background: -webkit-linear-gradient(left, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tracking-step.completed .step-title {
+            color: #4ade80;
+        }
+
+        .step-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .return-policy {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .return-btn {
+            background: transparent;
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .return-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <script src="js/auth.js"></script>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="products.html" class="logo">FanVerse</a>
+            <div class="nav-links">
+                <a href="products.html">Shop</a>
+                <a href="customize.html">Customize</a>
+                <a href="cart.html">Cart</a>
+                <a href="community.html">Community</a>
+                <a href="fan-edition.html" style="color:var(--pink-light);">🔥 Fan Edition</a>
+                <a href="rainbow-deal.html" class="nav-link" id="nav-rainbow" style="background:-webkit-linear-gradient(left, #8b5cf6, #3b82f6, #10b981, #eab308, #ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:900;">🌈 Deal</a>
+                <a href="help.html">Help</a>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="btn btn-ghost btn-sm" style="font-size:0.8rem;">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <section class="tracker-section">
+        <div class="container">
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <div>
+                        <h1 style="font-family:'Outfit',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:5px;"
+                            id="track-id">Order Tracker</h1>
+                        <p style="color:var(--text-muted); font-size:0.9rem;" id="track-date">Loading date...</p>
+                        <p style="color:#10b981; font-weight:600; font-size:1rem; margin-top:8px; display:none;"
+                            id="track-expected"></p>
+                    </div>
+                    <div style="text-align:right;">
+                        <span
+                            style="display:inline-block; background:rgba(138,43,226,0.15); color:var(--purple-light); padding:5px 12px; border-radius:20px; font-weight:600; font-size:0.9rem;"
+                            id="track-status">Tracking</span>
+                        <div id="track-total" style="font-weight:700; margin-top:8px;"></div>
+                    </div>
+                </div>
+
+                <div class="step-container" id="timeline">
+                    <!-- Injected by JS -->
+                </div>
+
+                <div class="return-policy" id="return-policy-box" style="display:none;">
+                    <h3 style="color:#ef4444; margin-bottom:10px;">Return Policy</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.5;">
+                        Return option will be working for only 10 days from the date of order received.<br>
+                        Clicking the button below will connect you with Charan Harsha for return assistance.
+                    </p>
+                    <a href="tel:+917337440053" class="return-btn">📞 Request Return</a>
+                    <button class="return-btn" style="border-color:#eab308; color:#eab308; margin-left:10px;" onclick="document.getElementById('review-modal').style.display='flex'">⭐ Rate & Review Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Review -->
+    <div id="review-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:100; align-items:center; justify-content:center; backdrop-filter:blur(5px);">
+        <div style="background:#1e1e28; border:1px solid rgba(255,255,255,0.1); padding:30px; border-radius:16px; max-width:400px; width:90%; text-align:center;">
+            <h3 style="font-family:'Outfit'; font-size:1.5rem; margin-bottom:15px;">Rate Your Order</h3>
+            <div style="font-size:2.5rem; letter-spacing:10px; cursor:pointer; margin-bottom:20px; color:#eab308;" id="star-rating">
+                <span onclick="setStars(1)">★</span><span onclick="setStars(2)">★</span><span onclick="setStars(3)">★</span><span onclick="setStars(4)">★</span><span onclick="setStars(5)">★</span>
+            </div>
+            <textarea id="review-text" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; border-radius:8px; color:#fff; min-height:80px; margin-bottom:20px; font-family:'Inter',sans-serif;" placeholder="What did you like about the product? Tell us!"></textarea>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button onclick="document.getElementById('review-modal').style.display='none'" class="btn btn-outline" style="flex:1;">Cancel</button>
+                <button onclick="submitReview()" class="btn btn-primary" style="flex:1; background:linear-gradient(135deg, #eab308, #f59e0b); color:#000; border:none;">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>© 2026 FanVerse. Educational project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('id');
+            const orders = JSON.parse(localStorage.getItem('fanverse_orders') || '[]');
+            const order = orders.find(o => o.id === orderId);
+
+            if (!order) {
+                document.getElementById('timeline').innerHTML = '<div style="text-align:center;color:var(--text-muted);">Order not found.</div>';
+                return;
+            }
+
+            document.getElementById('track-id').textContent = `Order #${order.id}`;
+            document.getElementById('track-total').textContent = `Total: ₹${parseFloat(order.total).toLocaleString('en-IN')}`;
+
+            const orderDate = new Date(order.date);
+            document.getElementById('track-date').textContent = orderDate.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' });
+
+            const isPrepaid = order.paymentMethod !== 'cod';
+            const isAP = (order.state || '').toLowerCase() === 'andhra pradesh';
+
+            // Timeline mechanics (Realistic daily-basis checks):
+            // Day 0: Order Confirmed
+            // Day 1: Picked Up
+            // Day 2: Shipped
+            // Day 4: Out for Delivery / Delivered
+            const day1 = new Date(orderDate); day1.setDate(day1.getDate() + 0);
+            const day3 = new Date(orderDate); day3.setDate(day3.getDate() + 1);
+            const day4 = new Date(orderDate); day4.setDate(day4.getDate() + 2);
+            const dayDelivery = new Date(orderDate); dayDelivery.setDate(dayDelivery.getDate() + 4);
+
+            const now = new Date();
+
+            // Format dates
+            const fd = (d) => d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+
+            const deliveredDate = new Date(dayDelivery.getTime() + 8 * 60 * 60 * 1000);
+
+            // Set Expected Delivery or Delivered Text dynamically
+            const expectedEl = document.getElementById('track-expected');
+            if (expectedEl) {
+                expectedEl.style.display = 'block';
+                if (now >= deliveredDate) {
+                    expectedEl.textContent = `Delivered on: ${fd(deliveredDate)}`;
+                } else {
+                    expectedEl.textContent = `Expected Delivery: ${fd(deliveredDate)}`;
+                }
+            }
+
+            // Define steps with realistic future-tense wording
+            const steps = [
+                {
+                    title: isPrepaid ? 'Order Confirmed & Payment Done' : 'Order Confirmed',
+                    desc: 'Your order has been placed successfully.',
+                    icon: '📝',
+                    date: day1,
+                    status: (now >= day1) ? (now >= day3 ? 'completed' : 'active') : 'pending'
+                },
+                {
+                    title: (now >= day3) ? 'Picked Up' : 'Expected Pick Up',
+                    desc: (now >= day3) ? 'Logistics partner has picked up your package.' : 'Logistics partner will pick up your package.',
+                    icon: '📦',
+                    date: day3,
+                    status: (now >= day3) ? (now >= day4 ? 'completed' : 'active') : 'pending'
+                },
+                {
+                    title: (now >= day4) ? 'Shipped' : 'Expected Shipping',
+                    desc: (now >= day4) ? 'Your package is on its way to your city.' : 'Your package will be shipped to your city.',
+                    icon: '🚀',
+                    date: day4,
+                    status: (now >= day4) ? (now >= dayDelivery ? 'completed' : 'active') : 'pending'
+                },
+                {
+                    title: (now >= dayDelivery) ? 'Out for Delivery' : 'Expected Out for Delivery',
+                    desc: (now >= dayDelivery) ? 'The delivery executive is out with your package.' : 'The delivery executive will be assigned.',
+                    icon: '🛵',
+                    date: dayDelivery,
+                    status: (now >= dayDelivery && now < deliveredDate) ? 'active' : (now >= dayDelivery ? 'completed' : 'pending')
+                },
+                {
+                    title: (now >= deliveredDate) ? (isPrepaid ? 'Delivered' : 'Delivered & Payment Done') : 'Expected Delivery',
+                    desc: (now >= deliveredDate) ? 'Your package has been successfully delivered.' : 'Your package will be delivered successfully.',
+                    icon: '🎉',
+                    date: deliveredDate,
+                    status: (now >= deliveredDate) ? 'completed' : 'pending'
+                }
+            ];
+
+            let html = '';
+            let currentStatusStr = order.status || 'Placed';
+
+            steps.forEach(s => {
+                if (s.status === 'active' || s.status === 'completed') {
+                    if (s.title.includes('Delivered')) currentStatusStr = 'Delivered';
+                    else if (s.title.includes('Out for Delivery')) currentStatusStr = 'Out for Delivery';
+                    else if (s.title.includes('Shipped')) currentStatusStr = 'Shipped';
+                    else if (s.title.includes('Pick')) currentStatusStr = 'Picked Up';
+                }
+
+                html += `
+                    <div class="tracking-step ${s.status}">
+                        <div class="step-line"></div>
+                        <div class="step-icon">${s.status === 'completed' ? '✓' : s.icon}</div>
+                        <div class="step-content">
+                            <div class="step-title">${s.title}</div>
+                            <div class="step-date">${fd(s.date)} — ${s.desc}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('timeline').innerHTML = html;
+            document.getElementById('track-status').textContent = currentStatusStr;
+
+            // Return logic
+            if (currentStatusStr === 'Delivered') {
+                document.getElementById('return-policy-box').style.display = 'block';
+            }
+        });
+
+        let currentStars = 5;
+        function setStars(stars) {
+            currentStars = stars;
+            const starSpans = document.getElementById('star-rating').querySelectorAll('span');
+            starSpans.forEach((span, i) => {
+                span.style.color = (i < stars) ? '#eab308' : '#555';
+            });
+        }
+
+        // Initialize stars to 5 by default
+        setTimeout(() => setStars(5), 100);
+
+        function submitReview() {
+            const reviewText = document.getElementById('review-text').value;
+            // To be integrated with Firebase backend later
+            if(typeof showToast === 'function') {
+                showToast('Thank you for your ' + currentStars + '-star rating!');
+            } else {
+                alert('Thank you for your ' + currentStars + ' star rating! Your review has been saved.');
+            }
+            document.getElementById('review-modal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
